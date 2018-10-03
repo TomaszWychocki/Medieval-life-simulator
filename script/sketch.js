@@ -1,9 +1,10 @@
 let mines = [], miners = [], blacksmiths = [];
-let mineImg, blacksmithImg, minerSpritesheet, minerSpriteData;
+let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
 function preload() {
     mineImg = loadImage('../assets/images/mine.png');
+    ironImg = loadImage('../assets/images/iron.png');
     blacksmithImg = loadImage('../assets/images/blacksmith_000.png');
     minerSpriteDataRight = loadJSON('../assets/data/miner-right.json');
     minerSpriteDataLeft = loadJSON('../assets/data/miner-left.json');
@@ -164,6 +165,7 @@ class Miner
         this.toLeftAnimation = minerLeftAnimation;
         this.mine = _mine;
         this.blacksmith = _blacksmith;
+        // this.ironImg =
         this.iron = 0;
         this.state = 0; // 0 - go to the mine | 1 - dig iron | 2 - go to the blacksmith
         this.speed = 5;
@@ -226,8 +228,7 @@ class Miner
 
         if(this.iron > 0)
         {
-            fill(0);
-            ellipse(this.posX - 2, this.posY - 2, 4, 4);
+            image(ironImg, this.posX - 2, this.posY, 15, 15);
         }
     }
 

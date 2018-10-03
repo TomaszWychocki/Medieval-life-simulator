@@ -13,7 +13,7 @@ class Blacksmith
     {
         if(this.iron >= 2)
         {
-            this.workProgress++;
+            this.workProgress += 0.3;
         }
 
         if(this.workProgress >= 100)

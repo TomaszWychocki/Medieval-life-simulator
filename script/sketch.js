@@ -6,20 +6,20 @@ function setup()
 
     for(let i = 0; i < 4; i++)
     {
-        mines.push(new Mine(random(width * 0.25),random(height * 0.25)));
+        mines.push(new Mine(random(width * 0.4),random(height * 0.4)));
     }
 
     for(let i = 0; i < 5; i++)
     {
-        blacksmiths.push(new Blacksmith(random(width - (0.25 * width), width),random(height * 0.25)));
+        blacksmiths.push(new Blacksmith(random(width - (0.4 * width), width),random(height * 0.4)));
     }
 
     for (let i = 0; i < 2; i++)
     {
-        barracks.push(new Barracks(random(width - 0.25 * width, width), random(height * 0.25)));
+        barracks.push(new Barracks(random(width * 0.4), random(height - (0.4 * height), height)));
     }
 
-    hospitals.push(new Hospital(random(width * 0.25),random(height * 0.25)));
+    hospitals.push(new Hospital(random(width - (0.4 * width), width),random(height - (0.4 * height), height)));
 
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[0]));
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[1]));
@@ -46,6 +46,7 @@ function draw()
         function (blacksmith)
         {
             blacksmith.draw();
+			blacksmith.createSword();
         }
     );
 

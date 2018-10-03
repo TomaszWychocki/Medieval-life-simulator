@@ -1,14 +1,31 @@
 let mines = [], miners = [], blacksmiths = [];
-let mineImg, blacksmithImg;
+let mineImg, blacksmithImg, minerSpritesheet, minerSpriteData;
+let minerRightAnimation = [], minerLeftAnimation = [];
 
 function preload() {
     mineImg = loadImage('../assets/images/mine.png');
     blacksmithImg = loadImage('../assets/images/blacksmith_000.png');
+    minerSpriteDataRight = loadJSON('../assets/data/miner-right.json');
+    minerSpriteDataLeft = loadJSON('../assets/data/miner-left.json');
+    minerSpritesheet = loadImage('../assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
 }
 
 function setup()
 {
     createCanvas(windowWidth, windowHeight);
+    // Create animated frames from miner sprite
+    let minerRightFrames = minerSpriteDataRight.frames;
+    let minerLeftFrames = minerSpriteDataLeft.frames;
+    for(let i = 0; i < minerRightFrames.length; i++) {
+        let pos = minerRightFrames[i].position;
+        let minerImg = minerSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        minerRightAnimation.push(minerImg);
+    }
+    for(let i = 0; i < minerLeftFrames.length; i++) {
+        let pos = minerLeftFrames[i].position;
+        let minerImg = minerSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        minerLeftAnimation.push(minerImg);
+    }
 
     for(let i = 0; i < 4; i++)
     {
@@ -143,11 +160,14 @@ class Miner
     {
         this.posX = x;
         this.posY = y;
+        this.toRightAnimation = minerRightAnimation;
+        this.toLeftAnimation = minerLeftAnimation;
         this.mine = _mine;
         this.blacksmith = _blacksmith;
         this.iron = 0;
         this.state = 0; // 0 - go to the mine | 1 - dig iron | 2 - go to the blacksmith
         this.speed = 5;
+        this.index = 0;
     }
 
     action()
@@ -158,6 +178,7 @@ class Miner
 
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
+            this.animate();
 
             if(distanceTo(this.posX,this.posY,this.mine.posX,this.mine.posY) < 15)
             {
@@ -183,6 +204,7 @@ class Miner
 
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
+            this.animate();
 
             if(distanceTo(this.posX,this.posY,this.blacksmith.posX,this.blacksmith.posY) < 15)
             {
@@ -195,17 +217,21 @@ class Miner
 
     draw()
     {
-        noStroke();
-        fill(55, 204, 100);
-        ellipse(this.posX, this.posY, 20, 20);
-        fill(255);
-        textAlign(CENTER);
-        text('MINER', this.posX, this.posY - 12);
+        if(this.state == 0)
+        {
+            image(this.toLeftAnimation[this.index % this.toLeftAnimation.length], this.posX, this.posY, 20, 40);
+        } else {
+            image(this.toRightAnimation[this.index % this.toRightAnimation.length], this.posX, this.posY, 20, 40);
+        }
 
         if(this.iron > 0)
         {
             fill(0);
             ellipse(this.posX - 2, this.posY - 2, 4, 4);
         }
+    }
+
+    animate() {
+        this.index += this.speed;
     }
 }

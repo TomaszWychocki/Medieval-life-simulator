@@ -9,17 +9,16 @@ class Hospital {
 
     addPatient(patient)
     {
-      if (this.maxPatients > 5 && patient.health > 100)
+      if (this.maxPatients < 5 && patient.health < 100)
       {
         this.patients.push(patient);
       }
     }
 
     healPatient(patient) {
-      if(patient.health > 100) {
+      if(patient.health < 100) {
         patient.health++;
       }
-      return patient;
     }
 
     releasePatient(patient) {

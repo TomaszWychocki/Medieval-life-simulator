@@ -1,4 +1,4 @@
-let mines = [], miners = [], blacksmiths = [], barracks = [];
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [];
 
 function setup()
 {
@@ -18,6 +18,8 @@ function setup()
     {
         barracks.push(new Barracks(random(width - 0.25 * width, width), random(height * 0.25)));
     }
+
+    hospitals.push(new Hospital(random(width * 0.25),random(height * 0.25)));
 
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[0]));
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[1]));
@@ -59,6 +61,13 @@ function draw()
         function(barrack)
         {
             barrack.draw();
+        }
+    );
+
+    hospitals.forEach(
+        function(hospital)
+        {
+            hospital.draw();
         }
     );
 }

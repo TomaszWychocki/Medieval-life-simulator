@@ -1,6 +1,11 @@
 let mines = [], miners = [], blacksmiths = [];
+let blacksmithImg;
 
-function setup() 
+function preload() {
+    blacksmithImg = loadImage('../assets/images/blacksmith_000.png');
+}
+
+function setup()
 {
     createCanvas(windowWidth, windowHeight);
 
@@ -23,27 +28,27 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
 }
-  
+
 function draw()
 {
     background(125);
 
     mines.forEach(
-        function (mine) 
+        function (mine)
         {
             mine.draw();
         }
     );
 
     blacksmiths.forEach(
-        function (blacksmith) 
+        function (blacksmith)
         {
             blacksmith.draw();
         }
     );
 
     miners.forEach(
-        function (miner) 
+        function (miner)
         {
             miner.draw();
             miner.action();
@@ -68,9 +73,9 @@ function getNextPoint(actualX, actualY, destX, destY, speed)
     return [actualX + vNormalized[0] * speed, actualY + vNormalized[1] * speed];
 }
 
-class Mine 
+class Mine
 {
-    constructor(x, y) 
+    constructor(x, y)
     {
         this.posX = x;
         this.posY = y;
@@ -78,18 +83,18 @@ class Mine
         this.iron = 0;
     }
 
-    dig() 
+    dig()
     {
         this.miningProgress += 3;
 
-        if(this.miningProgress >= 100) 
+        if(this.miningProgress >= 100)
         {
             this.miningProgress = 0;
             this.iron++;
         }
     }
 
-    draw() 
+    draw()
     {
         noStroke();
         fill(255, 204, 100);
@@ -100,12 +105,13 @@ class Mine
     }
 }
 
-class Blacksmith 
+class Blacksmith
 {
-    constructor(x, y) 
+    constructor(x, y)
     {
         this.posX = x;
         this.posY = y;
+        this.img = blacksmithImg;
         this.iron = 0;
         this.swords = 0;
         this.workProgress = 0;
@@ -126,20 +132,16 @@ class Blacksmith
         }
     }
 
-    draw() 
+    draw()
     {
-        noStroke();
-        fill(2, 204, 200);
-        ellipse(this.posX, this.posY, 20, 20);
-        fill(255);
-        textAlign(CENTER);
-        text('BLACKSMITH', this.posX, this.posY - 12);
+        imageMode(CENTER);
+        image(this.img, this.posX, this.posY, 70, 70);
     }
 }
 
-class Miner 
+class Miner
 {
-    constructor(x, y, _mine, _blacksmith) 
+    constructor(x, y, _mine, _blacksmith)
     {
         this.posX = x;
         this.posY = y;
@@ -150,9 +152,9 @@ class Miner
         this.speed = 5;
     }
 
-    action() 
+    action()
     {
-        if(this.state == 0) 
+        if(this.state == 0)
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.mine.posX, this.mine.posY, this.speed);
 
@@ -165,7 +167,7 @@ class Miner
             }
         }
 
-        if(this.state == 1) 
+        if(this.state == 1)
         {
             this.mine.dig();
 
@@ -177,14 +179,14 @@ class Miner
             }
         }
 
-        if(this.state == 2) 
+        if(this.state == 2)
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY, this.speed);
 
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
 
-            if(distanceTo(this.posX,this.posY,this.blacksmith.posX,this.blacksmith.posY) < 15) 
+            if(distanceTo(this.posX,this.posY,this.blacksmith.posX,this.blacksmith.posY) < 15)
             {
                 this.blacksmith.iron += this.iron;
                 this.iron = 0;
@@ -202,7 +204,7 @@ class Miner
         textAlign(CENTER);
         text('MINER', this.posX, this.posY - 12);
 
-        if(this.iron > 0) 
+        if(this.iron > 0)
         {
             fill(0);
             ellipse(this.posX - 2, this.posY - 2, 4, 4);

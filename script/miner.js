@@ -47,7 +47,7 @@ class Miner
 
             if(distanceTo(this.posX,this.posY,this.blacksmith.posX,this.blacksmith.posY) < 15) 
             {
-                this.blacksmith.iron += this.iron;
+                this.blacksmith.receiveIron(this.iron);
                 this.iron = 0;
                 this.state = 0;
             }

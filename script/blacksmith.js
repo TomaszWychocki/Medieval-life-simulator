@@ -24,6 +24,11 @@ class Blacksmith
         }
     }
 
+    receiveIron(iron)
+    {
+        this.iron += iron;
+    }
+
     draw() 
     {
         noStroke();
@@ -32,5 +37,11 @@ class Blacksmith
         fill(255);
         textAlign(CENTER);
         text('BLACKSMITH', this.posX, this.posY - 12);
+
+        fill(255, 204, 0);
+        text('IRON: ' + this.iron, this.posX, this.posY + 24);
+
+        fill('#222222');
+        text('SWORDS: ' + this.swords, this.posX, this.posY + 36);
     }
 }

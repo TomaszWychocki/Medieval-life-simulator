@@ -1,6 +1,6 @@
-let mines = [], miners = [], blacksmiths = [];
+let mines = [], miners = [], blacksmiths = [], barracks = [];
 
-function setup() 
+function setup()
 {
     createCanvas(windowWidth, windowHeight);
 
@@ -14,6 +14,11 @@ function setup()
         blacksmiths.push(new Blacksmith(random(width - (0.25 * width), width),random(height * 0.25)));
     }
 
+    for (let i = 0; i < 2; i++)
+    {
+        barracks.push(new Barracks(random(width - 0.25 * width, width), random(height * 0.25)));
+    }
+
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[0]));
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[1]));
     miners.push(new Miner(random(width), random(height), mines[1], blacksmiths[2]));
@@ -23,30 +28,37 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
 }
-  
+
 function draw()
 {
     background(125);
 
     mines.forEach(
-        function (mine) 
+        function (mine)
         {
             mine.draw();
         }
     );
 
     blacksmiths.forEach(
-        function (blacksmith) 
+        function (blacksmith)
         {
             blacksmith.draw();
         }
     );
 
     miners.forEach(
-        function (miner) 
+        function (miner)
         {
             miner.draw();
             miner.action();
+        }
+    );
+
+    barracks.forEach(
+        function(barrack)
+        {
+            barrack.draw();
         }
     );
 }

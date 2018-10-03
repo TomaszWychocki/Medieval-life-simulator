@@ -1,4 +1,4 @@
-let mines = [], miners = [], blacksmiths = [];
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[];;
 let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
@@ -30,13 +30,20 @@ function setup()
 
     for(let i = 0; i < 4; i++)
     {
-        mines.push(new Mine(random(width * 0.25),random(height * 0.25)));
+        mines.push(new Mine(random(width * 0.4),random(height * 0.4)));
     }
 
     for(let i = 0; i < 5; i++)
     {
-        blacksmiths.push(new Blacksmith(random(width - (0.25 * width), width),random(height * 0.25)));
+        blacksmiths.push(new Blacksmith(random(width - (0.4 * width), width),random(height * 0.4)));
     }
+
+    for (let i = 0; i < 2; i++)
+    {
+        barracks.push(new Barracks(random(width * 0.4), random(height - (0.4 * height), height)));
+    }
+
+    hospitals.push(new Hospital(random(width - (0.4 * width), width),random(height - (0.4 * height), height)));
 
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[0]));
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[1]));
@@ -46,6 +53,10 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[2], blacksmiths[4]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
+
+	// I suppose 3 badguys should be enough...
+	for(let i = 0; i < 3; i++)
+		enemies.push(new Enemy(random(width), random(height)));
 }
 
 function draw()
@@ -63,6 +74,7 @@ function draw()
         function (blacksmith)
         {
             blacksmith.draw();
+			blacksmith.createSword();
         }
     );
 
@@ -73,6 +85,22 @@ function draw()
             miner.action();
         }
     );
+
+    barracks.forEach(
+        function(barrack)
+        {
+            barrack.draw();
+        }
+    );
+
+    hospitals.forEach(
+        function(hospital)
+        {
+            hospital.draw();
+        }
+    );
+
+	enemies.forEach(enemy=>enemy.draw());
 }
 
 function distanceTo(x, y, x2, y2)
@@ -90,149 +118,4 @@ function getNextPoint(actualX, actualY, destX, destY, speed)
     let vNormalized = [v[0] / vLength, v[1] / vLength];
 
     return [actualX + vNormalized[0] * speed, actualY + vNormalized[1] * speed];
-}
-
-class Mine
-{
-    constructor(x, y)
-    {
-        this.posX = x;
-        this.posY = y;
-        this.img = mineImg;
-        this.miningProgress = 0;
-        this.iron = 0;
-    }
-
-    dig()
-    {
-        this.miningProgress += 3;
-
-        if(this.miningProgress >= 100)
-        {
-            this.miningProgress = 0;
-            this.iron++;
-        }
-    }
-
-    draw()
-    {
-        imageMode(CENTER);
-        image(this.img, this.posX, this.posY, 60, 60);
-    }
-}
-
-class Blacksmith
-{
-    constructor(x, y)
-    {
-        this.posX = x;
-        this.posY = y;
-        this.img = blacksmithImg;
-        this.iron = 0;
-        this.swords = 0;
-        this.workProgress = 0;
-    }
-
-    createSword()
-    {
-        if(this.iron >= 2)
-        {
-            this.workProgress++;
-        }
-
-        if(this.workProgress >= 100)
-        {
-            this.workProgress = 0;
-            this.iron -= 2;
-            this.swords++;
-        }
-    }
-
-    draw()
-    {
-        imageMode(CENTER);
-        image(this.img, this.posX, this.posY, 70, 70);
-    }
-}
-
-class Miner
-{
-    constructor(x, y, _mine, _blacksmith)
-    {
-        this.posX = x;
-        this.posY = y;
-        this.toRightAnimation = minerRightAnimation;
-        this.toLeftAnimation = minerLeftAnimation;
-        this.mine = _mine;
-        this.blacksmith = _blacksmith;
-        // this.ironImg =
-        this.iron = 0;
-        this.state = 0; // 0 - go to the mine | 1 - dig iron | 2 - go to the blacksmith
-        this.speed = 5;
-        this.index = 0;
-    }
-
-    action()
-    {
-        if(this.state == 0)
-        {
-            let nextPoint = getNextPoint(this.posX, this.posY, this.mine.posX, this.mine.posY, this.speed);
-
-            this.posX = nextPoint[0];
-            this.posY = nextPoint[1];
-            this.animate();
-
-            if(distanceTo(this.posX,this.posY,this.mine.posX,this.mine.posY) < 15)
-            {
-                this.state = 1;
-            }
-        }
-
-        if(this.state == 1)
-        {
-            this.mine.dig();
-
-            if(this.mine.iron > 0)
-            {
-                this.iron = this.mine.iron;
-                this.mine.iron = 0;
-                this.state = 2;
-            }
-        }
-
-        if(this.state == 2)
-        {
-            let nextPoint = getNextPoint(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY, this.speed);
-
-            this.posX = nextPoint[0];
-            this.posY = nextPoint[1];
-            this.animate();
-
-            if(distanceTo(this.posX,this.posY,this.blacksmith.posX,this.blacksmith.posY) < 15)
-            {
-                this.blacksmith.iron += this.iron;
-                this.iron = 0;
-                this.state = 0;
-            }
-        }
-    }
-
-    draw()
-    {
-        if(this.state == 0)
-        {
-            image(this.toLeftAnimation[this.index % this.toLeftAnimation.length], this.posX, this.posY, 20, 40);
-        } else {
-            image(this.toRightAnimation[this.index % this.toRightAnimation.length], this.posX, this.posY, 20, 40);
-        }
-
-        if(this.iron > 0)
-        {
-            image(ironImg, this.posX - 2, this.posY, 15, 15);
-        }
-    }
-
-    animate() {
-        this.index += this.speed;
-    }
 }

@@ -1,7 +1,8 @@
-class Miner
+class Miner extends Villager
 {
     constructor(x, y, _mine, _blacksmith)
     {
+		super(x, y);
         this.posX = x;
         this.posY = y;
         this.mine = _mine;
@@ -9,11 +10,16 @@ class Miner
         this.iron = 0;
         this.state = 0; // 0 - go to the mine | 1 - dig iron | 2 - go to the blacksmith
         this.speed = 5;
-        this.health = 100;
+        this.displayText = `MINER (${this.health})`;
     }
 
     action()
     {
+		if(this.health <= 0){
+			this.displayText = "DEAD MINER";
+			return;
+		}
+		
         if(this.state == 0)
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.mine.posX, this.mine.posY, this.speed);
@@ -62,7 +68,7 @@ class Miner
         ellipse(this.posX, this.posY, 20, 20);
         fill(255);
         textAlign(CENTER);
-        text('MINER', this.posX, this.posY - 12);
+        text(this.displayText, this.posX, this.posY - 12);
 
         if(this.iron > 0)
         {

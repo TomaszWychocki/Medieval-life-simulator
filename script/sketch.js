@@ -1,4 +1,4 @@
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [];
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[];
 
 function setup()
 {
@@ -29,6 +29,10 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[2], blacksmiths[4]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
+	
+	// I suppose 3 badguys should be enough...
+	for(let i = 0; i < 3; i++)
+		enemies.push(new Enemy(random(width), random(height)));
 }
 
 function draw()
@@ -71,6 +75,8 @@ function draw()
             hospital.draw();
         }
     );
+	
+	enemies.forEach(enemy=>enemy.draw());
 }
 
 function distanceTo(x, y, x2, y2)

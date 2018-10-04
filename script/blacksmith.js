@@ -1,9 +1,10 @@
-class Blacksmith 
+class Blacksmith
 {
-    constructor(x, y) 
+    constructor(x, y)
     {
         this.posX = x;
         this.posY = y;
+        this.img = blacksmithImg;
         this.iron = 0;
         this.swords = 0;
         this.workProgress = 0;
@@ -29,14 +30,10 @@ class Blacksmith
         this.iron += iron;
     }
 
-    draw() 
+    draw()
     {
-        noStroke();
-        fill(2, 204, 200);
-        ellipse(this.posX, this.posY, 20, 20);
-        fill(255);
-        textAlign(CENTER);
-        text('BLACKSMITH', this.posX, this.posY - 12);
+        imageMode(CENTER);
+        image(this.img, this.posX, this.posY, 70, 70);
 
         fill(255, 204, 0);
         text('IRON: ' + this.iron, this.posX, this.posY + 24);

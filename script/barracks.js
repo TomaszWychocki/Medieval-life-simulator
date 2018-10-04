@@ -3,13 +3,12 @@ class Barracks {
     {
       this.posX = x;
       this.posY = y;
-      this.warriors = 0;
       this.trainingProgress = 0;
     }
 
     createWarrior()
     {
-      if (this.warriors >= 5)
+      if (this.setTime >= 5)
       {
         this.trainingProgress++;
       }
@@ -18,7 +17,7 @@ class Barracks {
       {
         this.trainingProgress = 0;
         this.warriors++;
-      }
+      }V
     }
 
     draw()

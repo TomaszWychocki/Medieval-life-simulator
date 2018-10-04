@@ -2,6 +2,7 @@ let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], en
 
 function setup()
 {
+    
     createCanvas(windowWidth, windowHeight);
 
     for(let i = 0; i < 4; i++)
@@ -29,7 +30,9 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[2], blacksmiths[4]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
-	
+
+    townhall = new Townhall(random(width * 0.4), random(height - (0.4 * height)));
+
 	// I suppose 3 badguys should be enough...
 	for(let i = 0; i < 3; i++)
 		enemies.push(new Enemy(random(width), random(height)));
@@ -75,7 +78,8 @@ function draw()
             hospital.draw();
         }
     );
-	
+    
+	townhall.draw();	
 	enemies.forEach(enemy=>enemy.draw());
 }
 

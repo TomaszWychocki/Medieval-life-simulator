@@ -13,6 +13,7 @@ function preload() {
 
 function setup()
 {
+    
     createCanvas(windowWidth, windowHeight);
     // Create animated frames from miner sprite
     let minerRightFrames = minerSpriteDataRight.frames;
@@ -53,6 +54,8 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[2], blacksmiths[4]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
+
+    townhall = new Townhall(random(width * 0.4), random(height - (0.4 * height)));
 
 	// I suppose 3 badguys should be enough...
 	for(let i = 0; i < 3; i++)
@@ -101,6 +104,8 @@ function draw()
             hospital.draw();
         }
     );
+
+	  townhall.draw();	
   
     warriors.forEach(warrior => {warrior.draw();});
     enemies.forEach(enemy=>enemy.draw());

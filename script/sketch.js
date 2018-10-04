@@ -1,8 +1,32 @@
 let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[], warriors=[];
+let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
+let minerRightAnimation = [], minerLeftAnimation = [];
+
+function preload() {
+    mineImg = loadImage('./assets/images/mine.png');
+    ironImg = loadImage('./assets/images/iron.png');
+    blacksmithImg = loadImage('./assets/images/blacksmith_000.png');
+    minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
+    minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
+    minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
+}
 
 function setup()
 {
     createCanvas(windowWidth, windowHeight);
+    // Create animated frames from miner sprite
+    let minerRightFrames = minerSpriteDataRight.frames;
+    let minerLeftFrames = minerSpriteDataLeft.frames;
+    for(let i = 0; i < minerRightFrames.length; i++) {
+        let pos = minerRightFrames[i].position;
+        let minerImg = minerSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        minerRightAnimation.push(minerImg);
+    }
+    for(let i = 0; i < minerLeftFrames.length; i++) {
+        let pos = minerLeftFrames[i].position;
+        let minerImg = minerSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        minerLeftAnimation.push(minerImg);
+    }
 
     for(let i = 0; i < 4; i++)
     {
@@ -29,7 +53,7 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[2], blacksmiths[4]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
-	
+
 	// I suppose 3 badguys should be enough...
 	for(let i = 0; i < 3; i++)
 		enemies.push(new Enemy(random(width), random(height)));
@@ -77,9 +101,9 @@ function draw()
             hospital.draw();
         }
     );
+  
     warriors.forEach(warrior => {warrior.draw();});
-	
-	enemies.forEach(enemy=>enemy.draw());
+    enemies.forEach(enemy=>enemy.draw());
 }
 
 function distanceTo(x, y, x2, y2)

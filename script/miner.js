@@ -10,6 +10,9 @@ class Miner extends Villager
         this.iron = 0;
         this.state = 0; // 0 - go to the mine | 1 - dig iron | 2 - go to the blacksmith
         this.speed = 5;
+        this.index = 0;
+        this.toRightAnimation = minerRightAnimation;
+        this.toLeftAnimation = minerLeftAnimation;
         this.displayText = `MINER (${this.health})`;
     }
 
@@ -19,13 +22,14 @@ class Miner extends Villager
 			this.displayText = "DEAD MINER";
 			return;
 		}
-		
+
         if(this.state == 0)
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.mine.posX, this.mine.posY, this.speed);
 
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
+            this.animate();
 
             if(distanceTo(this.posX,this.posY,this.mine.posX,this.mine.posY) < 15)
             {
@@ -51,6 +55,7 @@ class Miner extends Villager
 
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
+            this.animate();
 
             if(distanceTo(this.posX,this.posY,this.blacksmith.posX,this.blacksmith.posY) < 15)
             {
@@ -63,17 +68,20 @@ class Miner extends Villager
 
     draw()
     {
-        noStroke();
-        fill(55, 204, 100);
-        ellipse(this.posX, this.posY, 20, 20);
-        fill(255);
-        textAlign(CENTER);
-        text(this.displayText, this.posX, this.posY - 12);
+        if(this.state == 0)
+        {
+            image(this.toLeftAnimation[this.index % this.toLeftAnimation.length], this.posX, this.posY, 20, 40);
+        } else {
+            image(this.toRightAnimation[this.index % this.toRightAnimation.length], this.posX, this.posY, 20, 40);
+        }
 
         if(this.iron > 0)
         {
-            fill(0);
-            ellipse(this.posX - 2, this.posY - 2, 4, 4);
+            image(ironImg, this.posX - 2, this.posY, 15, 15);
         }
+    }
+
+    animate() {
+        this.index += this.speed;
     }
 }

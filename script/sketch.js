@@ -1,4 +1,4 @@
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[];;
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[], warriors=[];
 let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
@@ -89,6 +89,8 @@ function draw()
     barracks.forEach(
         function(barrack)
         {
+            barrack.createWarrior();
+            barrack.checkForEnemies();
             barrack.draw();
         }
     );
@@ -99,8 +101,9 @@ function draw()
             hospital.draw();
         }
     );
-
-	enemies.forEach(enemy=>enemy.draw());
+  
+    warriors.forEach(warrior => {warrior.draw();});
+    enemies.forEach(enemy=>enemy.draw());
 }
 
 function distanceTo(x, y, x2, y2)

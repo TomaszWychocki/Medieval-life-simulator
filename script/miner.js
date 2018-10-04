@@ -8,7 +8,7 @@ class Miner extends Villager
         this.mine = _mine;
         this.blacksmith = _blacksmith;
         this.iron = 0;
-        this.state = 0; // 0 - go to the mine | 1 - dig iron | 2 - go to the blacksmith
+        this.state = 0;
         this.speed = 5;
         this.index = 0;
         this.toRightAnimation = minerRightAnimation;
@@ -18,10 +18,24 @@ class Miner extends Villager
 
     action()
     {
+        /**
+         * MINER STATES:
+         * 0 - go to the mine
+         * 1 - dig iron
+         * 2 - go to the blacksmith
+         * 3 - go to hospital
+         * 4 - heal wounds
+         */
+
         if (this.health <= 0)
         {
             this.displayText = "DEAD MINER";
             return;
+        }
+
+        if (this.health < 100 && this.iron == 0 && this.state != 4)
+        {
+            this.state = 3;
         }
 
         if (this.state == 0)
@@ -62,6 +76,35 @@ class Miner extends Villager
             {
                 this.blacksmith.receiveIron(this.iron);
                 this.iron = 0;
+                this.state = 0;
+            }
+        }
+
+        if (this.state == 3)
+        {
+            if (distanceTo(this.posX, this.posY, hospitals[0].posX, hospitals[0].posY) < 15)
+            {
+                if(hospitals[0].addPatient())
+                {
+                    this.state = 4;
+                }
+            }
+
+            let nextPoint = getNextPoint(this.posX, this.posY, hospitals[0].posX, hospitals[0].posY, this.speed * 0.75);
+
+            this.posX = nextPoint[0];
+            this.posY = nextPoint[1];
+            this.animate();
+        }
+
+        if (this.state == 4)
+        {
+            hospitals[0].healPatient(this);
+
+            if (this.health >= 100)
+            {
+                this.health = 100;
+                hospitals[0].releasePatient();
                 this.state = 0;
             }
         }

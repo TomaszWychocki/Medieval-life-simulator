@@ -5,28 +5,32 @@ class Hospital
         this.posX = x;
         this.posY = y;
         this.maxPatients = 5;
-        this.patients = [];
+        this.patietnsCounter = 0;
     }
 
-    addPatient(patient)
+    addPatient()
     {
-        if (this.maxPatients < 5 && patient.health < 100)
+        if (this.patietnsCounter < this.maxPatients)
         {
-            this.patients.push(patient);
+            this.patietnsCounter++;
+            return true;
         }
+
+        return false;
     }
 
     healPatient(patient)
     {
         if (patient.health < 100)
         {
-            patient.health++;
+            patient.health += 0.1;
+            patient.displayText = `MINER (${Math.round(patient.health)})`;
         }
     }
 
-    releasePatient(patient)
+    releasePatient()
     {
-        this.patients.pop(patient);
+        this.patietnsCounter--;
     }
 
     draw()

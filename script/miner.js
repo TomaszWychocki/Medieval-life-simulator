@@ -67,6 +67,17 @@ class Miner extends Villager
         }
     }
 
+    displayHealth() {
+        push()
+            let healthLength = constrain(this.health/100*30, 0, 30)
+            strokeWeight(0)
+            fill(color("green"))
+            rect(this.posX - 15, this.posY - 25, healthLength ,5)
+            fill(color("red"))
+            rect(this.posX - 15 + healthLength, this.posY - 25, 30 - healthLength ,5)
+        pop()
+    }
+
     draw()
     {
         if (this.state == 0)
@@ -81,6 +92,8 @@ class Miner extends Villager
         {
             image(ironImg, this.posX - 2, this.posY, 15, 15);
         }
+        text(this.displayText, this.posX, this.posY - 28);  
+        this.displayHealth()      
     }
 
     animate()

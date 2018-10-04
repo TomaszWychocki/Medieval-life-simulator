@@ -2,7 +2,7 @@ class Miner extends Villager
 {
     constructor(x, y, _mine, _blacksmith)
     {
-		super(x, y);
+        super(x, y);
         this.posX = x;
         this.posY = y;
         this.mine = _mine;
@@ -18,12 +18,13 @@ class Miner extends Villager
 
     action()
     {
-		if(this.health <= 0){
-			this.displayText = "DEAD MINER";
-			return;
-		}
+        if (this.health <= 0)
+        {
+            this.displayText = "DEAD MINER";
+            return;
+        }
 
-        if(this.state == 0)
+        if (this.state == 0)
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.mine.posX, this.mine.posY, this.speed);
 
@@ -31,17 +32,17 @@ class Miner extends Villager
             this.posY = nextPoint[1];
             this.animate();
 
-            if(distanceTo(this.posX,this.posY,this.mine.posX,this.mine.posY) < 15)
+            if (distanceTo(this.posX, this.posY, this.mine.posX, this.mine.posY) < 15)
             {
                 this.state = 1;
             }
         }
 
-        if(this.state == 1)
+        if (this.state == 1)
         {
             this.mine.dig();
 
-            if(this.mine.iron > 0)
+            if (this.mine.iron > 0)
             {
                 this.iron = this.mine.iron;
                 this.mine.iron = 0;
@@ -49,7 +50,7 @@ class Miner extends Villager
             }
         }
 
-        if(this.state == 2)
+        if (this.state == 2)
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY, this.speed);
 
@@ -57,7 +58,7 @@ class Miner extends Villager
             this.posY = nextPoint[1];
             this.animate();
 
-            if(distanceTo(this.posX,this.posY,this.blacksmith.posX,this.blacksmith.posY) < 15)
+            if (distanceTo(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY) < 15)
             {
                 this.blacksmith.receiveIron(this.iron);
                 this.iron = 0;
@@ -68,20 +69,22 @@ class Miner extends Villager
 
     draw()
     {
-        if(this.state == 0)
+        if (this.state == 0)
         {
             image(this.toLeftAnimation[this.index % this.toLeftAnimation.length], this.posX, this.posY, 20, 40);
-        } else {
+        } else
+        {
             image(this.toRightAnimation[this.index % this.toRightAnimation.length], this.posX, this.posY, 20, 40);
         }
 
-        if(this.iron > 0)
+        if (this.iron > 0)
         {
             image(ironImg, this.posX - 2, this.posY, 15, 15);
         }
     }
 
-    animate() {
+    animate()
+    {
         this.index += this.speed;
     }
 }

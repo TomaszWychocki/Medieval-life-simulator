@@ -13,7 +13,7 @@ class Mine
     {
         this.miningProgress += 3;
 
-        if(this.miningProgress >= 100)
+        if (this.miningProgress >= 100)
         {
             this.miningProgress = 0;
             this.iron++;
@@ -24,8 +24,8 @@ class Mine
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 60, 60);
-		
-		fill(255);
+
+        fill(255);
         textAlign(CENTER);
         text('MINE', this.posX, this.posY - 35);
     }

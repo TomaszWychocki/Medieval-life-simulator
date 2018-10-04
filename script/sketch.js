@@ -1,8 +1,9 @@
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[], warriors=[];
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [];
 let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
-function preload() {
+function preload()
+{
     mineImg = loadImage('./assets/images/mine.png');
     ironImg = loadImage('./assets/images/iron.png');
     blacksmithImg = loadImage('./assets/images/blacksmith_000.png');
@@ -13,30 +14,31 @@ function preload() {
 
 function setup()
 {
-    
     createCanvas(windowWidth, windowHeight);
     // Create animated frames from miner sprite
     let minerRightFrames = minerSpriteDataRight.frames;
     let minerLeftFrames = minerSpriteDataLeft.frames;
-    for(let i = 0; i < minerRightFrames.length; i++) {
+    for (let i = 0; i < minerRightFrames.length; i++)
+    {
         let pos = minerRightFrames[i].position;
         let minerImg = minerSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
         minerRightAnimation.push(minerImg);
     }
-    for(let i = 0; i < minerLeftFrames.length; i++) {
+    for (let i = 0; i < minerLeftFrames.length; i++)
+    {
         let pos = minerLeftFrames[i].position;
         let minerImg = minerSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
         minerLeftAnimation.push(minerImg);
     }
 
-    for(let i = 0; i < 4; i++)
+    for (let i = 0; i < 4; i++)
     {
-        mines.push(new Mine(random(width * 0.4),random(height * 0.4)));
+        mines.push(new Mine(random(width * 0.4), random(height * 0.4)));
     }
 
-    for(let i = 0; i < 5; i++)
+    for (let i = 0; i < 5; i++)
     {
-        blacksmiths.push(new Blacksmith(random(width - (0.4 * width), width),random(height * 0.4)));
+        blacksmiths.push(new Blacksmith(random(width - (0.4 * width), width), random(height * 0.4)));
     }
 
     for (let i = 0; i < 2; i++)
@@ -44,7 +46,7 @@ function setup()
         barracks.push(new Barracks(random(width * 0.4), random(height - (0.4 * height), height)));
     }
 
-    hospitals.push(new Hospital(random(width - (0.4 * width), width),random(height - (0.4 * height), height)));
+    hospitals.push(new Hospital(random(width - (0.4 * width), width), random(height - (0.4 * height), height)));
 
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[0]));
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[1]));
@@ -57,58 +59,47 @@ function setup()
 
     townhall = new Townhall(random(width * 0.4), random(height - (0.4 * height)));
 
-	// I suppose 3 badguys should be enough...
-	for(let i = 0; i < 3; i++)
-		enemies.push(new Enemy(random(width), random(height)));
+    // I suppose 3 badguys should be enough...
+    for (let i = 0; i < 3; i++)
+    {
+        enemies.push(new Enemy(random(width), random(height)));
+    }
 }
 
 function draw()
 {
     background(125);
 
-    mines.forEach(
-        function (mine)
-        {
-            mine.draw();
-        }
+    mines.forEach(mine => { mine.draw(); });
+
+    blacksmiths.forEach(blacksmith =>
+    {
+        blacksmith.draw();
+        blacksmith.createSword();
+    }
     );
 
-    blacksmiths.forEach(
-        function (blacksmith)
-        {
-            blacksmith.draw();
-			blacksmith.createSword();
-        }
+    miners.forEach(miner =>
+    {
+        miner.draw();
+        miner.action();
+    }
     );
 
-    miners.forEach(
-        function (miner)
-        {
-            miner.draw();
-            miner.action();
-        }
+    barracks.forEach(barrack =>
+    {
+        barrack.createWarrior();
+        barrack.checkForEnemies();
+        barrack.draw();
+    }
     );
 
-    barracks.forEach(
-        function(barrack)
-        {
-            barrack.createWarrior();
-            barrack.checkForEnemies();
-            barrack.draw();
-        }
-    );
+    hospitals.forEach(hospital => { hospital.draw(); });
 
-    hospitals.forEach(
-        function(hospital)
-        {
-            hospital.draw();
-        }
-    );
+    townhall.draw();
 
-	  townhall.draw();	
-  
-    warriors.forEach(warrior => {warrior.draw();});
-    enemies.forEach(enemy=>enemy.draw());
+    warriors.forEach(warrior => { warrior.draw(); });
+    enemies.forEach(enemy => enemy.draw());
 }
 
 function distanceTo(x, y, x2, y2)

@@ -8,13 +8,12 @@ class Townhall
 
     soundAlarm() 
     {
-	//sounds an alarm to let villagers to flee or run to safety
     }
 
     draw() 
     {
         noStroke();
-        fill(240, 240, 240);
+        fill(230, 230, 230);
         ellipse(this.posX, this.posY, 20, 20);
         fill(255);
         textAlign(CENTER);

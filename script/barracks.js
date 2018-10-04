@@ -5,11 +5,12 @@ class Barracks {
       this.posY = y;
       this.warriors = 0;
       this.trainingProgress = 0;
+      this.deployed = 0;
     }
 
     createWarrior()
     {
-      if (this.warriors >= 5)
+      if (this.warriors <= 5)
       {
         this.trainingProgress++;
       }
@@ -19,6 +20,25 @@ class Barracks {
         this.trainingProgress = 0;
         this.warriors++;
       }
+    }
+    checkForEnemies(){
+      enemies.forEach(enemy=>{
+        var dist = distanceTo(this.posX,this.posY,enemy.posX,enemy.posY);
+        if(dist < 100){
+         this.deployWarrior();
+        }
+      });
+    }
+    deployWarrior(){
+      if(this.deployed>=this.warriors){
+        return;
+      }
+      warriors.push(new Warrior(this.posX, this.posY,this));
+      this.deployed++;
+    }
+    warriorDied(){
+      this.warriors--;
+      this.deployed--;
     }
 
     draw()

@@ -1,31 +1,32 @@
-class Mine 
+class Mine
 {
-    constructor(x, y) 
+    constructor(x, y)
     {
         this.posX = x;
         this.posY = y;
+        this.img = mineImg;
         this.miningProgress = 0;
         this.iron = 0;
     }
 
-    dig() 
+    dig()
     {
         this.miningProgress += 3;
 
-        if(this.miningProgress >= 100) 
+        if(this.miningProgress >= 100)
         {
             this.miningProgress = 0;
             this.iron++;
         }
     }
 
-    draw() 
+    draw()
     {
-        noStroke();
-        fill(255, 204, 100);
-        ellipse(this.posX, this.posY, 20, 20);
-        fill(255);
+        imageMode(CENTER);
+        image(this.img, this.posX, this.posY, 60, 60);
+		
+		fill(255);
         textAlign(CENTER);
-        text('MINE', this.posX, this.posY - 12);
+        text('MINE', this.posX, this.posY - 35);
     }
 }

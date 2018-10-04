@@ -1,4 +1,4 @@
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [];
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
 let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
@@ -33,20 +33,58 @@ function setup()
 
     for (let i = 0; i < 4; i++)
     {
-        mines.push(new Mine(random(width * 0.4), random(height * 0.4)));
+        let pos = { x: random(width), y: random(height) };
+
+        if (checkCollisionsWithExistingBuildings(pos))
+        {
+            mines.push(new Mine(pos.x, pos.y));
+        }
+        else
+        {
+            i--;
+        }
     }
 
     for (let i = 0; i < 5; i++)
     {
-        blacksmiths.push(new Blacksmith(random(width - (0.4 * width), width), random(height * 0.4)));
+        let pos = { x: random(width), y: random(height) };
+
+        if (checkCollisionsWithExistingBuildings(pos))
+        {
+            blacksmiths.push(new Blacksmith(pos.x, pos.y));
+        }
+        else
+        {
+            i--;
+        }
     }
 
     for (let i = 0; i < 2; i++)
     {
-        barracks.push(new Barracks(random(width * 0.4), random(height - (0.4 * height), height)));
+        let pos = { x: random(width), y: random(height) };
+
+        if (checkCollisionsWithExistingBuildings(pos))
+        {
+            barracks.push(new Barracks(pos.x, pos.y));
+        }
+        else
+        {
+            i--;
+        }
     }
 
-    hospitals.push(new Hospital(random(width - (0.4 * width), width), random(height - (0.4 * height), height)));
+    let pos = { x: random(width), y: random(height) };
+    while (!checkCollisionsWithExistingBuildings(pos))
+    {
+        pos = { x: random(width), y: random(height) };
+    }
+    hospitals.push(new Hospital(pos.x, pos.y));
+
+    while (!checkCollisionsWithExistingBuildings(pos))
+    {
+        pos = { x: random(width), y: random(height) };
+    }
+    townhall = new Townhall(pos.x, pos.y);
 
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[0]));
     miners.push(new Miner(random(width), random(height), mines[0], blacksmiths[1]));
@@ -56,8 +94,6 @@ function setup()
     miners.push(new Miner(random(width), random(height), mines[2], blacksmiths[4]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[3]));
     miners.push(new Miner(random(width), random(height), mines[3], blacksmiths[2]));
-
-    townhall = new Townhall(random(width * 0.4), random(height - (0.4 * height)));
 
     // I suppose 3 badguys should be enough...
     for (let i = 0; i < 3; i++)
@@ -117,4 +153,65 @@ function getNextPoint(actualX, actualY, destX, destY, speed)
     let vNormalized = [v[0] / vLength, v[1] / vLength];
 
     return [actualX + vNormalized[0] * speed, actualY + vNormalized[1] * speed];
+}
+
+function checkCollisionsWithExistingBuildings(pos)
+{
+    let collision = false;
+    let minDistance = 80;
+
+    if (pos.x < 90 || pos.x > width - 90 || pos.y < 90 || pos.y > height - 90)
+    {
+        return false;
+    }
+
+    mines.forEach(mine => 
+    {
+        if (distanceTo(mine.posX, mine.posY, pos.x, pos.y) < minDistance)
+        {
+            collision = true;
+            return;
+        }
+    }
+    );
+
+    blacksmiths.forEach(blacksmith =>
+    {
+        if (distanceTo(blacksmith.posX, blacksmith.posY, pos.x, pos.y) < minDistance)
+        {
+            collision = true;
+            return;
+        }
+    }
+    );
+
+    barracks.forEach(barrack =>
+    {
+        if (distanceTo(barrack.posX, barrack.posY, pos.x, pos.y) < minDistance)
+        {
+            collision = true;
+            return;
+        }
+    }
+    );
+
+    hospitals.forEach(hospital =>
+    {
+        if (distanceTo(hospital.posX, hospital.posY, pos.x, pos.y) < minDistance)
+        {
+            collision = true;
+            return;
+        }
+    }
+    );
+
+    if (townhall !== undefined && townhall !== null)
+    {
+        if (distanceTo(townhall.posX, townhall.posY, pos.x, pos.y) < minDistance)
+        {
+            return false;
+        }
+    }
+
+    return !collision;
 }

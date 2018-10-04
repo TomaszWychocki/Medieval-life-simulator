@@ -42,6 +42,7 @@ class Miner extends Villager
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.mine.posX, this.mine.posY, this.speed);
 
+            this.direction = nextPoint[0] < this.posX ? 0 : 1;
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
             this.animate();
@@ -68,6 +69,7 @@ class Miner extends Villager
         {
             let nextPoint = getNextPoint(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY, this.speed);
 
+            this.direction = nextPoint[0] < this.posX ? 0 : 1;
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
             this.animate();
@@ -92,6 +94,7 @@ class Miner extends Villager
 
             let nextPoint = getNextPoint(this.posX, this.posY, hospitals[0].posX, hospitals[0].posY, this.speed * 0.75);
 
+            this.direction = nextPoint[0] < this.posX ? 0 : 1;
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
             this.animate();
@@ -123,20 +126,15 @@ class Miner extends Villager
 
     draw()
     {
-        if (this.state == 0)
-        {
-            image(this.toLeftAnimation[this.index % this.toLeftAnimation.length], this.posX, this.posY, 20, 40);
-        } else
-        {
-            image(this.toRightAnimation[this.index % this.toRightAnimation.length], this.posX, this.posY, 20, 40);
-        }
+        let animation = this.direction === 1 ? this.toRightAnimation : this.toLeftAnimation;
+        image(animation[this.index % animation.length], this.posX, this.posY, 20, 40);
 
         if (this.iron > 0)
         {
             image(ironImg, this.posX - 2, this.posY, 15, 15);
         }
-        text(this.displayText, this.posX, this.posY - 28);  
-        this.displayHealth()      
+        text(this.displayText, this.posX, this.posY - 28);
+        this.displayHealth()
     }
 
     animate()

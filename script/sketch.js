@@ -3,12 +3,12 @@ let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
 function preload() {
-    mineImg = loadImage('../assets/images/mine.png');
-    ironImg = loadImage('../assets/images/iron.png');
-    blacksmithImg = loadImage('../assets/images/blacksmith_000.png');
-    minerSpriteDataRight = loadJSON('../assets/data/miner-right.json');
-    minerSpriteDataLeft = loadJSON('../assets/data/miner-left.json');
-    minerSpritesheet = loadImage('../assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
+    mineImg = loadImage('./assets/images/mine.png');
+    ironImg = loadImage('./assets/images/iron.png');
+    blacksmithImg = loadImage('./assets/images/blacksmith_000.png');
+    minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
+    minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
+    minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
 }
 
 function setup()

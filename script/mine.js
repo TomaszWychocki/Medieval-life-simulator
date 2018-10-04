@@ -24,5 +24,9 @@ class Mine
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 60, 60);
+		
+		fill(255);
+        textAlign(CENTER);
+        text('MINE', this.posX, this.posY - 35);
     }
 }

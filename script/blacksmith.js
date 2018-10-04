@@ -34,11 +34,15 @@ class Blacksmith
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 70, 70);
+		
+		fill(255);
+        textAlign(CENTER);
+        text('BLACKSMITH', this.posX, this.posY - 35);
 
         fill(255, 204, 0);
-        text('IRON: ' + this.iron, this.posX, this.posY + 24);
+        text('IRON: ' + this.iron, this.posX, this.posY + 40);
 
         fill('#222222');
-        text('SWORDS: ' + this.swords, this.posX, this.posY + 36);
+        text('SWORDS: ' + this.swords, this.posX, this.posY + 52);
     }
 }

@@ -1,4 +1,4 @@
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[];
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[], warriors=[];
 
 function setup()
 {
@@ -65,6 +65,8 @@ function draw()
     barracks.forEach(
         function(barrack)
         {
+            barrack.createWarrior();
+            barrack.checkForEnemies();
             barrack.draw();
         }
     );
@@ -75,6 +77,7 @@ function draw()
             hospital.draw();
         }
     );
+    warriors.forEach(warrior => {warrior.draw();});
 	
 	enemies.forEach(enemy=>enemy.draw());
 }

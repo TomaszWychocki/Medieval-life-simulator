@@ -8,6 +8,7 @@ class Enemy{
 		this.defense = defense;
 		this.speed = 5;
 		this.direction = [random(width), random(height)];
+		this.displayText = "Enemy";
 	}
 	
 	checkForMiners(){
@@ -22,6 +23,9 @@ class Enemy{
 	}
 	
 	draw(){
+		if(this.health > 0){
+			
+		
 		this.checkForMiners();
 		
 		if(distanceTo(this.posX,this.posY,this.direction[0],this.direction[1]) < 10)
@@ -30,13 +34,16 @@ class Enemy{
 		var point = getNextPoint(this.posX, this.posY, this.direction[0], this.direction[1], this.speed);
 		this.posX = point[0];
 		this.posY = point[1];
-		
+		}
+		else{
+			this.displayText = "DEAD ENEMY";
+		}
         noStroke();
         fill(244, 66, 226);
         ellipse(this.posX, this.posY, 20, 20);
         fill(255);
         textAlign(CENTER);
-        text('Enemy', this.posX, this.posY - 12);
+        text(this.displayText, this.posX, this.posY - 12);
     }
 	
 }

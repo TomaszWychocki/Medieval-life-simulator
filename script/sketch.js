@@ -1,5 +1,5 @@
 let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
-let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
+let mineImg, ironImg, blacksmithImg, hospitalImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
 function preload()
@@ -7,6 +7,7 @@ function preload()
     mineImg = loadImage('./assets/images/mine.png');
     ironImg = loadImage('./assets/images/iron.png');
     blacksmithImg = loadImage('./assets/images/blacksmith_000.png');
+    hospitalImg = loadImage('./assets/images/hospital.png');
     minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
     minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
     minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
@@ -165,7 +166,7 @@ function checkCollisionsWithExistingBuildings(pos)
         return false;
     }
 
-    mines.forEach(mine => 
+    mines.forEach(mine =>
     {
         if (distanceTo(mine.posX, mine.posY, pos.x, pos.y) < minDistance)
         {

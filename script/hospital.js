@@ -4,6 +4,7 @@ class Hospital
     {
         this.posX = x;
         this.posY = y;
+        this.img = hospitalImg;
         this.maxPatients = 5;
         this.patietnsCounter = 0;
     }
@@ -35,9 +36,9 @@ class Hospital
 
     draw()
     {
-        noStroke();
-        fill(244, 65, 80);
-        ellipse(this.posX, this.posY, 20, 20);
+        imageMode(CENTER);
+        image(this.img, this.posX, this.posY, 80, 80);
+
         fill(255);
         textAlign(CENTER);
         text('HOSPITAL', this.posX, this.posY - 12);

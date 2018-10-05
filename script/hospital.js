@@ -41,6 +41,6 @@ class Hospital
 
         fill(255);
         textAlign(CENTER);
-        text('HOSPITAL', this.posX, this.posY - 12);
+        text('HOSPITAL', this.posX, this.posY - 40);
     }
 }

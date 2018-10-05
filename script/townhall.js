@@ -17,6 +17,6 @@ class Townhall
         image(this.img, this.posX, this.posY, 100, 100);
 
         textAlign(CENTER);
-        text('TOWNHALL', this.posX, this.posY - 12);
+        text('TOWNHALL', this.posX, this.posY - 50);
     }
 }

@@ -59,6 +59,6 @@ class Barracks
 
         fill(255);
         textAlign(CENTER);
-        text('BARRACKS', this.posX, this.posY - 12);
+        text('BARRACKS', this.posX, this.posY - 30);
     }
 }

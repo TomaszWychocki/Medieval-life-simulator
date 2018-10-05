@@ -9,6 +9,7 @@ class Barracks
         this.deployed = 0;
     }
 
+
     createWarrior()
     {
         if (this.warriors <= 5)
@@ -23,6 +24,7 @@ class Barracks
         }
     }
 
+
     checkForEnemies()
     {
         enemies.forEach(enemy =>
@@ -34,6 +36,7 @@ class Barracks
             }
         });
     }
+
 
     deployWarrior()
     {

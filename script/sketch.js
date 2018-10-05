@@ -1,5 +1,5 @@
 let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
-let mineImg, ironImg, blacksmithImg, hospitalImg, minerSpritesheet, minerSpriteData;
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
 function preload()
@@ -8,6 +8,7 @@ function preload()
     ironImg = loadImage('./assets/images/iron.png');
     blacksmithImg = loadImage('./assets/images/blacksmith_000.png');
     hospitalImg = loadImage('./assets/images/hospital.png');
+    townhallImg = loadImage('./assets/images/townhall.png');
     minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
     minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
     minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');

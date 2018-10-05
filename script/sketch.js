@@ -1,5 +1,6 @@
 let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
-let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, minerSpritesheet, minerSpriteData;
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg;
+let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
 let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];

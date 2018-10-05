@@ -4,6 +4,7 @@ class Barracks
     {
         this.posX = x;
         this.posY = y;
+        this.img = barracksImg;
         this.warriors = 0;
         this.trainingProgress = 0;
         this.deployed = 0;
@@ -44,7 +45,7 @@ class Barracks
         warriors.push(new Warrior(this.posX, this.posY, this));
         this.deployed++;
     }
-    
+
     warriorDied()
     {
         this.warriors--;
@@ -53,9 +54,9 @@ class Barracks
 
     draw()
     {
-        noStroke();
-        fill(244, 122, 66);
-        ellipse(this.posX, this.posY, 20, 20);
+        imageMode(CENTER);
+        image(this.img, this.posX, this.posY, 60, 60);
+
         fill(255);
         textAlign(CENTER);
         text('BARRACKS', this.posX, this.posY - 12);

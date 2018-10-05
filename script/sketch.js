@@ -1,24 +1,19 @@
-let mines = [],
-    miners = [],
-    blacksmiths = [],
-    barracks = [],
-    hospitals = [],
-    enemies = [],
-    warriors = [],
-    townhall;
-let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
-let minerRightAnimation = [],
-    minerLeftAnimation = [];
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, minerSpritesheet, minerSpriteData;
+let minerRightAnimation = [], minerLeftAnimation = [];
 let backgroundMusic, blacksmithMusic, miningMusic;
 
 function preload()
 {
-    mineImg = loadImage("./assets/images/mine.png");
-    ironImg = loadImage("./assets/images/iron.png");
-    blacksmithImg = loadImage("./assets/images/blacksmith_000.png");
-    minerSpriteDataRight = loadJSON("./assets/data/miner-right.json");
-    minerSpriteDataLeft = loadJSON("./assets/data/miner-left.json");
-    minerSpritesheet = loadImage("./assets/images/universal-lpc-sprite_male_01_walk-3frame.png");
+    mineImg = loadImage('./assets/images/mine.png');
+    ironImg = loadImage('./assets/images/iron.png');
+    blacksmithImg = loadImage('./assets/images/blacksmith_000.png');
+    hospitalImg = loadImage('./assets/images/hospital.png');
+    townhallImg = loadImage('./assets/images/townhall.png');
+    barracksImg = loadImage('./assets/images/barracks_000.png');
+    minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
+    minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
+    minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
     backgroundMusic = loadSound("./assets/music/background-music.mp3");
     blacksmithMusic = loadSound("./assets/music/blacksmith.wav");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");

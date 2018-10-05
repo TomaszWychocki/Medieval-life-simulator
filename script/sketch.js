@@ -1,5 +1,5 @@
 let buildings = [];
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall, cemetery;
+let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall, cemetery, priest;
 let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, minerSpritesheet, minerSpriteData, grassTexture;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let backgroundMusic, blacksmithMusic, miningMusic;
@@ -72,6 +72,10 @@ function setup()
     townhall = new Townhall(pos.x, pos.y);
     buildings.push(townhall);
 
+    pos = generateBuildingPosition();
+    cemetery = new Cemetery(pos.x, pos.y);
+    buildings.push(cemetery);
+
     miners.push(
         new Miner(random(width), random(height), mines[0], blacksmiths[0])
     );
@@ -98,10 +102,12 @@ function setup()
     );
 
     // I suppose 3 badguys should be enough...
-    for (let i = 0; i < 3; i++)
+    for (let i = 0; i < 10; i++)
     {
         enemies.push(new Enemy(random(width), random(height)));
     }
+
+    priest = new Priest(random(width), random(height));
 
     // Background Music Setting
     backgroundMusic.setVolume(0.1);
@@ -163,7 +169,13 @@ function draw()
     {
         warrior.draw();
     });
+
     enemies.forEach(enemy => enemy.draw());
+
+    cemetery.draw();
+
+    priest.draw();
+    priest.action();
 }
 
 function distanceTo(x, y, x2, y2)

@@ -13,7 +13,7 @@ class Cemetery
         //image(this.img, this.posX, this.posY, 80, 80);
 
         noStroke();
-		fill(214, 66, 126);
+		fill(0);
 		ellipse(this.posX, this.posY, 20, 20);
         fill(255);
         textAlign(CENTER);

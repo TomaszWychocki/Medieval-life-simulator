@@ -1,13 +1,10 @@
-class Warrior
+class Warrior extends Villager
 {
 	constructor(x, y, barrak, health = 100, defense = 75)
 	{
-		this.posX = x;
-		this.posY = y;
-		this.health = health;
+		super(x, y);
 		this.defense = defense;
 		this.speed = 5;
-		this.direction = [random(width), random(height)];
 		this.barrak = barrak;
 	}
 

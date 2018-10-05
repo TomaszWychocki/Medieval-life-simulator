@@ -4,7 +4,8 @@ class Villager
 	{
 		this.posX = x;
 		this.posY = y;
-		this.direction = 1; // 0 = left, 1 = right
+		this.direction = [random(width), random(height)];
 		this.health = health;
+		this.isBurried = false;
 	}
 }

@@ -3,8 +3,6 @@ class Miner extends Villager
     constructor(x, y, _mine, _blacksmith)
     {
         super(x, y);
-        this.posX = x;
-        this.posY = y;
         this.mine = _mine;
         this.blacksmith = _blacksmith;
         this.iron = 0;

@@ -1,5 +1,5 @@
 let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
-let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg;
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture;
 let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
@@ -23,6 +23,7 @@ function preload()
     backgroundMusic = loadSound("./assets/music/background-music.mp3");
     blacksmithMusic = loadSound("./assets/music/blacksmith.wav");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
+    grassTexture = loadImage('./assets/images/grass_texture.jpg');
 }
 
 function setup()
@@ -176,7 +177,15 @@ function setup()
 
 function draw()
 {
-    background(125);
+    background(0);
+    var gCols = windowWidth / grassTexture.width + 1,
+        gRows = windowHeight / grassTexture.height + 1;
+    for (let w = 0; w < gCols; w++)
+    {
+        for(let h = 0; h < gRows; h++) {
+            image(grassTexture, w*grassTexture.width, h*grassTexture.height);
+        }
+    }
 
     mines.forEach(mine =>
     {

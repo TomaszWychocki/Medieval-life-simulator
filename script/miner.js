@@ -135,10 +135,28 @@ class Miner extends Villager
         }
         text(this.displayText, this.posX, this.posY - 28);
         this.displayHealth()
+
+        if (this.state == 1)
+        {
+            this.grunt();
+        }
     }
 
     animate()
     {
         this.index += this.speed;
+    }
+
+    grunt()
+    {
+        noStroke();
+        fill(255);
+        rect(this.posX + 15, this.posY - 40, 40, 20, 5);
+        triangle(this.posX + 15 + 5, this.posY - 40 + 20, this.posX + 15 + 15, this.posY - 40 + 20, this.posX + 15 + 2, this.posY - 40 + 30);
+
+        fill(0);
+        textSize(8);
+        textAlign(CENTER, CENTER);
+        text("Grunt!", this.posX + 15 + 20, this.posY - 40 + 10);
     }
 }

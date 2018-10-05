@@ -1,5 +1,5 @@
 let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies=[], warriors=[];
-let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
+let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData, grassTexture;
 let minerRightAnimation = [], minerLeftAnimation = [];
 
 function preload() {
@@ -9,6 +9,7 @@ function preload() {
     minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
     minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
     minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
+    grassTexture = loadImage('./assets/images/grass_texture.jpg');
 }
 
 function setup()
@@ -64,7 +65,15 @@ function setup()
 
 function draw()
 {
-    background(125);
+    background(0);
+    var gCols = windowWidth / grassTexture.width + 1,
+        gRows = windowHeight / grassTexture.height + 1;
+    for (let w = 0; w < gCols; w++)
+    {
+        for(let h = 0; h < gRows; h++) {
+            image(grassTexture, w*grassTexture.width, h*grassTexture.height);
+        }
+    }
 
     mines.forEach(
         function (mine)

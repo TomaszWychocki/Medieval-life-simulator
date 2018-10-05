@@ -1,6 +1,9 @@
 let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
-let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, minerSpritesheet, minerSpriteData, grassTexture;
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture;
+let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
+let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
+let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
 let backgroundMusic, blacksmithMusic, miningMusic;
 
 function preload()
@@ -14,6 +17,9 @@ function preload()
     minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
     minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
     minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
+    enemySpritesheet = loadImage('./assets/images/goblinsword.png');
+    enemyWalkDataRight = loadJSON('./assets/data/enemy-walk-right.json');
+    enemyWalkDataLeft =  loadJSON('./assets/data/enemy-walk-left.json');
     backgroundMusic = loadSound("./assets/music/background-music.mp3");
     blacksmithMusic = loadSound("./assets/music/blacksmith.wav");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
@@ -37,6 +43,22 @@ function setup()
         let pos = minerLeftFrames[i].position;
         let minerImg = minerSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
         minerLeftAnimation.push(minerImg);
+    }
+
+    // Create animated frames from enemy sprite
+    let enemyWalkRFrames = enemyWalkDataRight.frames;
+    let enemyWalkLFrames = enemyWalkDataLeft.frames;
+    for (let i = 0; i < enemyWalkRFrames.length; i++)
+    {
+        let pos = enemyWalkRFrames[i].position;
+        let enemyImg = enemySpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        enemyWalkAnimRight.push(enemyImg);
+    }
+    for (let i = 0; i < enemyWalkLFrames.length; i++)
+    {
+        let pos = enemyWalkLFrames[i].position;
+        let enemyImg = enemySpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        enemyWalkAnimLeft.push(enemyImg);
     }
 
     for (let i = 0; i < 4; i++)

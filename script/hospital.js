@@ -1,37 +1,46 @@
-class Hospital {
+class Hospital
+{
     constructor(x, y)
     {
-      this.posX = x;
-      this.posY = y;
-      this.maxPatients = 5;
-      this.patients = [];
+        this.posX = x;
+        this.posY = y;
+        this.img = hospitalImg;
+        this.maxPatients = 5;
+        this.patietnsCounter = 0;
     }
 
-    addPatient(patient)
+    addPatient()
     {
-      if (this.maxPatients < 5 && patient.health < 100)
-      {
-        this.patients.push(patient);
-      }
+        if (this.patietnsCounter < this.maxPatients)
+        {
+            this.patietnsCounter++;
+            return true;
+        }
+
+        return false;
     }
 
-    healPatient(patient) {
-      if(patient.health < 100) {
-        patient.health++;
-      }
+    healPatient(patient)
+    {
+        if (patient.health < 100)
+        {
+            patient.health += 0.1;
+            patient.displayText = `MINER (${Math.round(patient.health)})`;
+        }
     }
 
-    releasePatient(patient) {
-      this.patients.pop(patient);
+    releasePatient()
+    {
+        this.patietnsCounter--;
     }
 
     draw()
     {
-      noStroke();
-      fill(244, 65, 80);
-      ellipse(this.posX, this.posY, 20, 20);
-      fill(255);
-      textAlign(CENTER);
-      text('HOSPITAL', this.posX, this.posY - 12);
+        imageMode(CENTER);
+        image(this.img, this.posX, this.posY, 80, 80);
+
+        fill(255);
+        textAlign(CENTER);
+        text('HOSPITAL', this.posX, this.posY - 12);
     }
-  }
+}

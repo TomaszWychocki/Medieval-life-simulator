@@ -12,12 +12,12 @@ class Blacksmith
 
     createSword()
     {
-        if(this.iron >= 2)
+        if (this.iron >= 2)
         {
             this.workProgress += 0.3;
         }
 
-        if(this.workProgress >= 100)
+        if (this.workProgress >= 100)
         {
             this.workProgress = 0;
             this.iron -= 2;
@@ -34,8 +34,8 @@ class Blacksmith
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 70, 70);
-		
-		fill(255);
+
+        fill(255);
         textAlign(CENTER);
         text('BLACKSMITH', this.posX, this.posY - 35);
 

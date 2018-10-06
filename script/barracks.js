@@ -10,15 +10,15 @@ class Barracks extends Building
 
     createWarrior()
     {
-        if (this.warriors <= 3)
+        if (warriors <= 3)
         {
-            this.trainingProgress++;
+            trainingProgress++;
         }
 
-        if (this.trainingProgress >= 100)
+        if (trainingProgress >= 100)
         {
-            this.trainingProgress = 0;
-            this.warriors++;
+            trainingProgress = 0;
+            warriors++;
         }
     }
 
@@ -40,14 +40,14 @@ class Barracks extends Building
         {
             return;
         }
-        characters.push(new Warrior(this.posX, this.posY, this));
+        characters.push(new Warrior(posX, posY, this));
         this.deployed++;
     }
 
     warriorDied()
     {
-        this.warriors--;
-        this.deployed--;
+        warriors--;
+        deployed--;
     }
 
     update()
@@ -59,7 +59,7 @@ class Barracks extends Building
     show()
     {
         imageMode(CENTER);
-        image(this.img, this.posX, this.posY, 60, 60);
+        image(this.img, posX, posY, 60, 60);
 
         fill(255);
         textAlign(CENTER);

@@ -9,7 +9,7 @@ let mines = [],
 let mineImg, ironImg, blacksmithImg, minerSpritesheet, minerSpriteData;
 let minerRightAnimation = [],
   minerLeftAnimation = [];
-let backgroundMusic, blacksmithMusic, miningMusic;
+let blacksmithMusic, miningMusic;
 
 function preload() {
   mineImg = loadImage("./assets/images/mine.png");
@@ -20,7 +20,6 @@ function preload() {
   minerSpritesheet = loadImage(
     "./assets/images/universal-lpc-sprite_male_01_walk-3frame.png"
   );
-  backgroundMusic = loadSound("../assets/music/background-music.mp3");
   blacksmithMusic = loadSound("../assets/music/blacksmith.wav");
   miningMusic = loadSound("../assets/music/mining-sound.mp3");
 }
@@ -130,16 +129,12 @@ function setup() {
     enemies.push(new Enemy(random(width), random(height)));
   }
 
-  // Background Music Setting
-  backgroundMusic.setVolume(0.1);
-  backgroundMusic.play();
-
   // Blacksmith Music Setting
-  backgroundMusic.setVolume(1);
-  backgroundMusic.play();
+  blacksmithMusic.setVolume(0.2);
+  blacksmithMusic.play();
 
   // Mining Music Setting
-  miningMusic.setVolume(2);
+  miningMusic.setVolume(0.2);
   miningMusic.play();
 }
 

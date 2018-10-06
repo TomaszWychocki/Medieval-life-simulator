@@ -6,7 +6,7 @@ let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
 let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
 let backgroundMusic, blacksmithMusic, miningMusic;
-
+let SWORD_DURABLE = 100, SWORD_DEGRADE = 50; 
 function preload()
 {
     mineImg = loadImage('./assets/images/mine.png');
@@ -176,7 +176,7 @@ function draw()
     barracks.forEach(barrack =>
     {
         barrack.createWarrior();
-        barrack.checkForEnemies();
+        barrack.checkForEnemies(blacksmiths);
         barrack.draw();
     });
 

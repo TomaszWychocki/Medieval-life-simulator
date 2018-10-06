@@ -12,7 +12,7 @@ class Barracks
 
     createWarrior()
     {
-        if (this.warriors <= 5)
+        if (this.warriors <= 3)
         {
             this.trainingProgress++;
         }
@@ -24,25 +24,26 @@ class Barracks
         }
     }
 
-    checkForEnemies()
+    checkForEnemies(blacksmiths)
     {
         enemies.forEach(enemy =>
         {
             var dist = distanceTo(this.posX, this.posY, enemy.posX, enemy.posY);
             if (dist < 100)
             {
-                this.deployWarrior();
+                var randomBlackSmith = int(random(0, blacksmiths.length))
+                this.deployWarrior(blacksmiths[randomBlackSmith]);
             }
         });
     }
 
-    deployWarrior()
+    deployWarrior(blacksmith)
     {
         if (this.deployed >= this.warriors)
         {
             return;
         }
-        warriors.push(new Warrior(this.posX, this.posY, this));
+        warriors.push(new Warrior(this.posX, this.posY, this, blacksmith));
         this.deployed++;
     }
 

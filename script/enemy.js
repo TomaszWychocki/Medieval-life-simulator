@@ -13,7 +13,7 @@ class Enemy extends Villager
 
 	checkForMiners()
 	{
-		miners.forEach(miner =>
+		getCharactersArrayByType("Miner").forEach(miner =>
 		{
 			var dist = distanceTo(this.posX, this.posY, miner.posX, miner.posY);
 			if (dist < 15)
@@ -25,7 +25,12 @@ class Enemy extends Villager
 		});
 	}
 
-	draw()
+	update()
+	{
+		
+	}
+
+	show()
 	{
 		let animation;
 		let currDir; // Store change in direction

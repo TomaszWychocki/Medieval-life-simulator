@@ -1,10 +1,8 @@
-class Barracks
+class Barracks extends Building
 {
     constructor(x, y)
     {
-        this.posX = x;
-        this.posY = y;
-        this.img = barracksImg;
+        super(x, y, barracksImg);
         this.warriors = 0;
         this.trainingProgress = 0;
         this.deployed = 0;
@@ -24,26 +22,25 @@ class Barracks
         }
     }
 
-    checkForEnemies(blacksmiths)
+    checkForEnemies()
     {
-        enemies.forEach(enemy =>
+        getCharactersArrayByType("Enemy").forEach(enemy =>
         {
             var dist = distanceTo(this.posX, this.posY, enemy.posX, enemy.posY);
             if (dist < 100)
             {
-                var randomBlackSmith = int(random(0, blacksmiths.length))
-                this.deployWarrior(blacksmiths[randomBlackSmith]);
+                this.deployWarrior();
             }
         });
     }
 
-    deployWarrior(blacksmith)
+    deployWarrior()
     {
         if (this.deployed >= this.warriors)
         {
             return;
         }
-        warriors.push(new Warrior(this.posX, this.posY, this, blacksmith));
+        characters.push(new Warrior(this.posX, this.posY, this));
         this.deployed++;
     }
 
@@ -53,7 +50,13 @@ class Barracks
         this.deployed--;
     }
 
-    draw()
+    update()
+    {
+        this.createWarrior();
+        this.checkForEnemies();
+    }
+
+    show()
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 60, 60);

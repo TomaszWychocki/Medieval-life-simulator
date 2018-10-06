@@ -1,10 +1,8 @@
-class Mine
+class Mine extends Building
 {
     constructor(x, y)
     {
-        this.posX = x;
-        this.posY = y;
-        this.img = mineImg;
+        super(x, y, mineImg);
         this.miningProgress = 0;
         this.iron = 0;
     }
@@ -20,7 +18,12 @@ class Mine
         }
     }
 
-    draw()
+    update()
+    {
+        
+    }
+
+    show()
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 60, 60);

@@ -1,18 +1,21 @@
 class Warrior extends Villager
 {
-	constructor(x, y, barrak, blacksmith, health = 100, defense = 75)
+	constructor(x, y, barrak, health = 100, defense = 75)
 	{
 		super(x, y);
 		this.defense = defense;
 		this.speed = 5;
 		this.barrak = barrak;
 		this.sword_durable = 0; 
-		this.blacksmith = blacksmith;
+		
+		let blacksmiths = getBuildingsArrayByType("Blacksmith");
+		let randomBlackSmith = int(random(0, blacksmiths.length))
+		this.blacksmith = blacksmiths[randomBlackSmith];
 	}
 
 	checkForEnemies()
 	{
-		enemies.forEach(enemy =>
+		getCharactersArrayByType("Enemy").forEach(enemy =>
 		{
 			var dist = distanceTo(this.posX, this.posY, enemy.posX, enemy.posY);
 			if (dist < 15)
@@ -30,7 +33,7 @@ class Warrior extends Villager
 		this.barrak.warriorDied();
 	}
 	
-	move() 
+	update() 
 	{
 		if(this.sword_durable == 0) 
 		{
@@ -54,10 +57,8 @@ class Warrior extends Villager
 		this.posY = point[1];
 	}
 
-	draw()
+	show()
 	{
-		this.move() 
-
 		noStroke();
 		fill(214, 66, 126);
 		ellipse(this.posX, this.posY, 20, 20);

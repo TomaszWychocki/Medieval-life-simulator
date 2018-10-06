@@ -12,9 +12,10 @@ class Miner extends Villager
         this.toRightAnimation = minerRightAnimation;
         this.toLeftAnimation = minerLeftAnimation;
         this.displayText = `MINER (${this.health})`;
+        this.hospital = getBuildingsArrayByType("Hospital")[0];
     }
 
-    action()
+    update()
     {
         /**
          * MINER STATES:
@@ -82,15 +83,15 @@ class Miner extends Villager
 
         if (this.state == 3)
         {
-            if (distanceTo(this.posX, this.posY, hospitals[0].posX, hospitals[0].posY) < 15)
+            if (distanceTo(this.posX, this.posY, this.hospital.posX, this.hospital.posY) < 15)
             {
-                if(hospitals[0].addPatient())
+                if(this.hospital.addPatient())
                 {
                     this.state = 4;
                 }
             }
 
-            let nextPoint = getNextPoint(this.posX, this.posY, hospitals[0].posX, hospitals[0].posY, this.speed * 0.75);
+            let nextPoint = getNextPoint(this.posX, this.posY, this.hospital.posX, this.hospital.posY, this.speed * 0.75);
 
             this.direction = nextPoint[0] < this.posX ? 0 : 1;
             this.posX = nextPoint[0];
@@ -100,12 +101,12 @@ class Miner extends Villager
 
         if (this.state == 4)
         {
-            hospitals[0].healPatient(this);
+            this.hospital.healPatient(this);
 
             if (this.health >= 100)
             {
                 this.health = 100;
-                hospitals[0].releasePatient();
+                this.hospital.releasePatient();
                 this.state = 0;
             }
         }
@@ -122,7 +123,7 @@ class Miner extends Villager
         pop()
     }
 
-    draw()
+    show()
     {
         let animation = this.direction === 1 ? this.toRightAnimation : this.toLeftAnimation;
         image(animation[this.index % animation.length], this.posX, this.posY, 20, 40);
@@ -152,9 +153,11 @@ class Miner extends Villager
         rect(this.posX + 15, this.posY - 40, 40, 20, 5);
         triangle(this.posX + 15 + 5, this.posY - 40 + 20, this.posX + 15 + 15, this.posY - 40 + 20, this.posX + 15 + 2, this.posY - 40 + 30);
 
+        let previousTextSize = textSize();
         fill(0);
         textSize(8);
         textAlign(CENTER, CENTER);
         text("Grunt!", this.posX + 15 + 20, this.posY - 40 + 10);
+        textSize(previousTextSize);
     }
 }

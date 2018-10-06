@@ -1,10 +1,8 @@
-class Hospital
+class Hospital extends Building
 {
     constructor(x, y)
     {
-        this.posX = x;
-        this.posY = y;
-        this.img = hospitalImg;
+        super(x, y, hospitalImg);
         this.maxPatients = 5;
         this.patietnsCounter = 0;
     }
@@ -34,7 +32,12 @@ class Hospital
         this.patietnsCounter--;
     }
 
-    draw()
+    update()
+    {
+        
+    }
+
+    show()
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 80, 80);

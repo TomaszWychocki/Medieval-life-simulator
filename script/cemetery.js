@@ -1,13 +1,16 @@
-class Cemetery
+class Cemetery extends Building
 {
     constructor(x, y)
     {
-        this.posX = x;
-        this.posY = y;
-        this.img = "TODO";
+        super(x, y);
     }
 
-    draw()
+    update()
+    {
+        
+    }
+
+    show()
     {
         //imageMode(CENTER);
         //image(this.img, this.posX, this.posY, 80, 80);

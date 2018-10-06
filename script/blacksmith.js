@@ -1,10 +1,8 @@
-class Blacksmith
+class Blacksmith extends Building
 {
     constructor(x, y)
     {
-        this.posX = x;
-        this.posY = y;
-        this.img = blacksmithImg;
+        super(x, y, blacksmithImg);
         this.iron = 0;
         this.swords = 0;
         this.workProgress = 0;
@@ -30,7 +28,12 @@ class Blacksmith
         this.iron += iron;
     }
 
-    draw()
+    update()
+    {
+        this.createSword();
+    }
+
+    show()
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 70, 70);

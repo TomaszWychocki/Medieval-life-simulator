@@ -1,12 +1,10 @@
-class Villager
+class Building
 {
-	constructor(x, y, health = 100, defense = 75)
+	constructor(x, y, img = null)
 	{
 		this.posX = x;
 		this.posY = y;
-		this.direction = [random(width), random(height)];
-		this.health = health;
-		this.isBurried = false;
+		this.img = img;
 	}
 
 	getType()

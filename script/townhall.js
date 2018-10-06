@@ -1,17 +1,21 @@
-class Townhall
+class Townhall extends Building
 {
     constructor(x, y)
     {
-        this.posX = x;
-        this.posY = y;
-        this.img = townhallImg;
+        super(x, y, townhallImg);
     }
 
     soundAlarm()
     {
+
     }
 
-    draw()
+    update()
+    {
+        
+    }
+
+    show()
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 100, 100);

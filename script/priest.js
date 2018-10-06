@@ -6,9 +6,10 @@ class Priest extends Villager
         this.state = 0;
         this.speed = 5;
         this.deadCharacter = null;
+        this.cemetery = getBuildingsArrayByType("Cemetery")[0];
     }
 
-    action()
+    update()
     {
         /**
          * PRIEST STATES:
@@ -19,35 +20,18 @@ class Priest extends Villager
 
         if (this.state == 0)
         {
-            if (distanceTo(this.posX, this.posY, cemetery.posX, cemetery.posY) > 15)
+            if (distanceTo(this.posX, this.posY, this.cemetery.posX, this.cemetery.posY) > 15)
             {
-                let nextPoint = getNextPoint(this.posX, this.posY, cemetery.posX, cemetery.posY, this.speed);
+                let nextPoint = getNextPoint(this.posX, this.posY, this.cemetery.posX, this.cemetery.posY, this.speed);
                 this.posX = nextPoint[0];
                 this.posY = nextPoint[1];
             }
 
-            miners.forEach(miner =>
+            characters.forEach(character =>
             {
-                if(miner.health <= 0 && miner.isBurried == false)
+                if(character.health <= 0 && character.isBurried == false)
                 {
-                    this.deadCharacter = miner;
-                    this.state = 1;
-                }
-            });
-
-            warriors.forEach(warrior =>
-            {
-                if(warrior.health <= 0 && warrior.isBurried == false)
-                {
-                    this.deadCharacter = warrior;
-                    this.state = 1;
-                }
-            });
-
-            enemies.forEach(enemy => {
-                if(enemy.health <= 0 && enemy.isBurried == false)
-                {
-                    this.deadCharacter = enemy;
+                    this.deadCharacter = character;
                     this.state = 1;
                 }
             });
@@ -68,14 +52,14 @@ class Priest extends Villager
 
         if (this.state == 2)
         {
-            let nextPoint = getNextPoint(this.posX, this.posY, cemetery.posX, cemetery.posY, this.speed);
+            let nextPoint = getNextPoint(this.posX, this.posY, this.cemetery.posX, this.cemetery.posY, this.speed);
 
             this.posX = nextPoint[0];
             this.posY = nextPoint[1];
             this.deadCharacter.posX = nextPoint[0] + 10;
             this.deadCharacter.posY = nextPoint[1] + 10;
 
-            if (distanceTo(this.posX, this.posY, cemetery.posX, cemetery.posY) < 15)
+            if (distanceTo(this.posX, this.posY, this.cemetery.posX, this.cemetery.posY) < 15)
             {
                 this.deadCharacter.isBurried = true;
                 this.state = 0;
@@ -83,7 +67,7 @@ class Priest extends Villager
         }
     }
 
-    draw()
+    show()
     {
         noStroke(255);
         fill(0, 255, 0);

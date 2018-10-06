@@ -1,12 +1,12 @@
-let buildings = [];
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall, cemetery, priest;
+let buildings = [], characters = [];
 let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture;
 let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
 let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
 let backgroundMusic, blacksmithMusic, miningMusic;
-let SWORD_DURABLE = 100, SWORD_DEGRADE = 50; 
+let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
+
 function preload()
 {
     mineImg = loadImage('./assets/images/mine.png');
@@ -30,6 +30,7 @@ function preload()
 function setup()
 {
     createCanvas(windowWidth, windowHeight);
+
     // Create animated frames from miner sprite
     let minerRightFrames = minerSpriteDataRight.frames;
     let minerLeftFrames = minerSpriteDataLeft.frames;
@@ -65,71 +66,64 @@ function setup()
     for (let i = 0; i < 4; i++)
     {
         let pos = generateBuildingPosition();
-        let mine = new Mine(pos.x, pos.y);
-        buildings.push(mine);
-        mines.push(mine);
+        buildings.push(new Mine(pos.x, pos.y));
     }
 
     for (let i = 0; i < 5; i++)
     {
         let pos = generateBuildingPosition();
-        let blacksmith = new Blacksmith(pos.x, pos.y);
-        buildings.push(blacksmith);
-        blacksmiths.push(blacksmith);
+        buildings.push(new Blacksmith(pos.x, pos.y));
     }
 
     for (let i = 0; i < 2; i++)
     {
         let pos = generateBuildingPosition();
-        let barrack = new Barracks(pos.x, pos.y);
-        buildings.push(barrack);
-        barracks.push(barrack);
+        buildings.push(new Barracks(pos.x, pos.y));
     }
 
     let pos = generateBuildingPosition();
-    hospitals.push(new Hospital(pos.x, pos.y));
-    buildings.push(hospitals[0]);
+    buildings.push(new Hospital(pos.x, pos.y));
 
     pos = generateBuildingPosition();
-    townhall = new Townhall(pos.x, pos.y);
-    buildings.push(townhall);
+    buildings.push(new Townhall(pos.x, pos.y));
 
     pos = generateBuildingPosition();
-    cemetery = new Cemetery(pos.x, pos.y);
-    buildings.push(cemetery);
+    buildings.push(new Cemetery(pos.x, pos.y));
 
-    miners.push(
-        new Miner(random(width), random(height), mines[0], blacksmiths[0])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[0], getBuildingsArrayByType("Blacksmith")[0])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[0], blacksmiths[1])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[0], getBuildingsArrayByType("Blacksmith")[1])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[1], blacksmiths[2])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[1], getBuildingsArrayByType("Blacksmith")[2])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[1], blacksmiths[3])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[1], getBuildingsArrayByType("Blacksmith")[3])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[2], blacksmiths[4])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[2], getBuildingsArrayByType("Blacksmith")[4])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[2], blacksmiths[4])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[2], getBuildingsArrayByType("Blacksmith")[4])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[3], blacksmiths[3])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[3], getBuildingsArrayByType("Blacksmith")[3])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[3], blacksmiths[2])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[3], getBuildingsArrayByType("Blacksmith")[2])
     );
 
     // I suppose 3 badguys should be enough...
     for (let i = 0; i < 3; i++)
     {
-        enemies.push(new Enemy(random(width), random(height)));
+        characters.push(new Enemy(random(width), random(height)));
     }
 
-    priest = new Priest(random(width), random(height));
+    characters.push(
+        new Priest(random(width), random(height))
+    );
 
     // Background Music Setting
     backgroundMusic.setVolume(0.1);
@@ -156,48 +150,17 @@ function draw()
         }
     }
 
-    mines.forEach(mine =>
+    buildings.forEach(building =>
     {
-        mine.draw();
+        building.update();
+        building.show();
     });
 
-    blacksmiths.forEach(blacksmith =>
+    characters.forEach(character =>
     {
-        blacksmith.draw();
-        blacksmith.createSword();
+        character.update();
+        character.show();
     });
-
-    miners.forEach(miner =>
-    {
-        miner.draw();
-        miner.action();
-    });
-
-    barracks.forEach(barrack =>
-    {
-        barrack.createWarrior();
-        barrack.checkForEnemies(blacksmiths);
-        barrack.draw();
-    });
-
-    hospitals.forEach(hospital =>
-    {
-        hospital.draw();
-    });
-
-    townhall.draw();
-
-    warriors.forEach(warrior =>
-    {
-        warrior.draw();
-    });
-
-    enemies.forEach(enemy => enemy.draw());
-
-    cemetery.draw();
-
-    priest.draw();
-    priest.action();
 }
 
 function distanceTo(x, y, x2, y2)
@@ -247,4 +210,14 @@ function generateBuildingPosition()
     }
 
     return pos;
+}
+
+function getBuildingsArrayByType(type)
+{
+    return buildings.filter(building => building.getType() == type);
+}
+
+function getCharactersArrayByType(type)
+{
+    return characters.filter(character => character.getType() == type);
 }

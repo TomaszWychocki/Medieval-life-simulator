@@ -35,26 +35,29 @@ class Warrior extends Villager
 	
 	update() 
 	{
-		if(this.sword_durable == 0) 
+		if(this.sword_durable <= 0) 
 		{
 			this.direction = [this.blacksmith.posX, this.blacksmith.posY];
-			if(this.blacksmith.swords > 0)
+			if(this.blacksmith.swords > 0 && distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 15)
 			{
 				this.blacksmith.swords--;
 				this.sword_durable = SWORD_DURABLE;
 			}
 		}
-		else{
+		else
+		{
 			this.checkForEnemies();
-			if (distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 10)
+			if (distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 15)
 			{
 				this.direction = [random(width), random(height)];
 			}
 		} 
 
-		var point = getNextPoint(this.posX, this.posY, this.direction[0], this.direction[1], this.speed);
-		this.posX = point[0];
-		this.posY = point[1];
+		if(distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) > 10) {
+			var point = getNextPoint(this.posX, this.posY, this.direction[0], this.direction[1], this.speed);
+			this.posX = point[0];
+			this.posY = point[1];
+		}
 	}
 
 	show()

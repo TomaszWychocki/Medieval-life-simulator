@@ -7,7 +7,7 @@ class Warrior extends Villager
 		this.speed = 5;
 		this.barrak = barrak;
 		this.sword_durable = 0; 
-		
+		this.displayText = `WARRIOR (${this.health})`;
 		let blacksmiths = getBuildingsArrayByType("Blacksmith");
 		let randomBlackSmith = int(random(0, blacksmiths.length))
 		this.blacksmith = blacksmiths[randomBlackSmith];
@@ -67,11 +67,23 @@ class Warrior extends Villager
 		ellipse(this.posX, this.posY, 20, 20);
 		fill(255);
 		textAlign(CENTER);
-		text('Warrior', this.posX, this.posY - 12);
+		text(this.displayText, this.posX, this.posY - 28);
+        this.displayHealth()
 		//
 		push()
 			textSize(10)
-			text('DUR: '+this.sword_durable, this.posX, this.posY - 30);
+			text('DUR: '+this.sword_durable, this.posX, this.posY + 20);
 		pop()
 	}
+
+	displayHealth() {
+        push()
+            let healthLength = constrain(this.health/100*30, 0, 30)
+            strokeWeight(0)
+            fill(color("green"))
+            rect(this.posX - 15, this.posY - 20, healthLength ,5)
+            fill(color("red"))
+            rect(this.posX - 15 + healthLength, this.posY - 20, 30 - healthLength ,5)
+        pop()
+    }
 }

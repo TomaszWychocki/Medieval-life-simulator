@@ -4,14 +4,14 @@ class Hospital extends Building
     {
         super(x, y, hospitalImg);
         this.maxPatients = 5;
-        this.patietnsCounter = 0;
+        this.patientsCounter = 0;
     }
 
     addPatient()
     {
-        if (this.patietnsCounter < this.maxPatients)
+        if (this.patientsCounter < this.maxPatients)
         {
-            this.patietnsCounter++;
+            this.patientsCounter++;
             return true;
         }
 
@@ -23,13 +23,13 @@ class Hospital extends Building
         if (patient.health < 100)
         {
             patient.health += 0.1;
-            patient.displayText = `MINER (${Math.round(patient.health)})`;
+            patient.displayText = `PATIENT (${Math.round(patient.health)})`;
         }
     }
 
     releasePatient()
     {
-        this.patietnsCounter--;
+        this.patientsCounter--;
     }
 
     update()

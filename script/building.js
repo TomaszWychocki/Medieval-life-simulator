@@ -5,6 +5,7 @@ class Building
 		this.posX = x;
 		this.posY = y;
 		this.img = img;
+		this.id = Math.random() * this.posX * this.posY;
 	}
 
 	getType()

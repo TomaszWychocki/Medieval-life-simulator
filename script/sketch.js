@@ -1,5 +1,5 @@
 let buildings = [], characters = [];
-let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture;
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture, homeImg;
 let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
@@ -24,6 +24,7 @@ function preload()
     blacksmithMusic = loadSound("./assets/music/blacksmith.mp3");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
     grassTexture = loadImage('./assets/images/grass_texture.jpg');
+    homeImg = loadImage('./assets/images/home.png');
 }
 
 function setup()
@@ -114,6 +115,11 @@ function setup()
         new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[3], getBuildingsArrayByType("Blacksmith")[2])
     );
 
+    characters.forEach(character => {
+        const homePos = generateBuildingPosition();
+        buildings.push(new Home(homePos.x, homePos.y));
+    });
+
     // I suppose 3 badguys should be enough...
     for (let i = 0; i < 3; i++)
     {
@@ -130,7 +136,7 @@ function setup()
     // Blacksmith Music Setting
     blacksmithMusic.setVolume(1);
     blacksmithMusic.play();
-        blacksmithMusic.loop();
+    blacksmithMusic.loop();
 
     // Mining Music Setting
     miningMusic.setVolume(2);

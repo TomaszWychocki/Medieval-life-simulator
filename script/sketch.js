@@ -123,7 +123,10 @@ function setup()
     characters.push(
         new Priest(random(width), random(height))
     );
-
+    for (let i = 0; i < 5; i++)
+    {
+        characters.push(new Farmer(random(width), random(height)));
+    }
     // Blacksmith Music Setting
     blacksmithMusic.setVolume(1);
     blacksmithMusic.play();

@@ -4,7 +4,7 @@ let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
 let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
-let backgroundMusic, blacksmithMusic, miningMusic;
+let blacksmithMusic, miningMusic;
 let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
 
 function preload()
@@ -21,7 +21,6 @@ function preload()
     enemySpritesheet = loadImage('./assets/images/goblinsword.png');
     enemyWalkDataRight = loadJSON('./assets/data/enemy-walk-right.json');
     enemyWalkDataLeft =  loadJSON('./assets/data/enemy-walk-left.json');
-    backgroundMusic = loadSound("./assets/music/background-music.mp3");
     blacksmithMusic = loadSound("./assets/music/blacksmith.wav");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
     grassTexture = loadImage('./assets/images/grass_texture.jpg');
@@ -125,17 +124,15 @@ function setup()
         new Priest(random(width), random(height))
     );
 
-    // Background Music Setting
-    backgroundMusic.setVolume(0.1);
-    backgroundMusic.play();
-
     // Blacksmith Music Setting
-    backgroundMusic.setVolume(1);
-    backgroundMusic.play();
+    blacksmithMusic.setVolume(1);
+    blacksmithMusic.play();
+        blacksmithMusic.loop();
 
     // Mining Music Setting
     miningMusic.setVolume(2);
     miningMusic.play();
+    miningMusic.loop();
 }
 
 function draw()

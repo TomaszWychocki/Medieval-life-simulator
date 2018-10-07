@@ -130,11 +130,11 @@ function setup()
     backgroundMusic.play();
 
     // Blacksmith Music Setting
-    backgroundMusic.setVolume(1);
+    backgroundMusic.setVolume(.3);
     backgroundMusic.play();
 
     // Mining Music Setting
-    miningMusic.setVolume(2);
+    miningMusic.setVolume(.5);
     miningMusic.play();
 }
 

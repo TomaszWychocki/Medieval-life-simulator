@@ -11,6 +11,7 @@ class Warrior extends Villager
 		let blacksmiths = getBuildingsArrayByType("Blacksmith");
 		let randomBlackSmith = int(random(0, blacksmiths.length))
 		this.blacksmith = blacksmiths[randomBlackSmith];
+		this.hospital = getBuildingsArrayByType("Hospital")[0];
 	}
 
 	checkForEnemies()
@@ -20,6 +21,7 @@ class Warrior extends Villager
 			var dist = distanceTo(this.posX, this.posY, enemy.posX, enemy.posY);
 			if (dist < 15)
 			{
+				console.log('enemy found');
 				this.sword_durable = constrain(this.sword_durable - SWORD_DEGRADE, 0, SWORD_DURABLE);
 				enemy.health -= 10;
 				enemy.displayText = "OUCH!";
@@ -35,28 +37,83 @@ class Warrior extends Villager
 	
 	update() 
 	{
-		if(this.sword_durable <= 0) 
+		if (this.health <= 0) 
 		{
-			this.direction = [this.blacksmith.posX, this.blacksmith.posY];
-			if(this.blacksmith.swords > 0 && distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 15)
+			this.die();
+			this.displayText = "DEAD WARRIOR";
+            return;
+		}
+
+		if (this.health < 100 && this.state != 4) 
+		{
+			this.state = 3;
+		}
+
+		if (this.sword_durable <= 0) 
+		{
+			this.state = 0;	
+		}
+
+		if (this.state == 0) 
+		{
+			if (distanceTo(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY) < 15) 
+			{
+				this.state = 1;	
+			}
+			else 
+			{
+				this.move(this.blacksmith.posX, this.blacksmith.posY);
+				this.animate();
+			}
+		}
+
+		if (this.state == 1) 
+		{
+			if(this.blacksmith.swords > 0)
 			{
 				this.blacksmith.swords--;
 				this.sword_durable = SWORD_DURABLE;
+				this.state = 2;
 			}
 		}
-		else
+		
+		if (this.state == 2) 
 		{
 			this.checkForEnemies();
 			if (distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 15)
 			{
 				this.direction = [random(width), random(height)];
 			}
-		} 
+			this.move(this.direction[0], this.direction[1]);
+			this.animate();
+		}
+		
+		if (this.state == 3) 
+		{
+			console.log('heading to hospital', this);
+			if (distanceTo(this.posX, this.posY, this.hospital.posX, this.hospital.posY) < 15) 
+			{
+				console.log('at hospital');
+				if(this.hospital.addPatient())
+                {
+                    this.state = 4;
+                }
+			}
+			console.log('not at hospital yet', this.hospital);
+			this.move(this.hospital.posX, this.hospital.posY);
+			this.animate();
+		}
 
-		if(distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) > 10) {
-			var point = getNextPoint(this.posX, this.posY, this.direction[0], this.direction[1], this.speed);
-			this.posX = point[0];
-			this.posY = point[1];
+		if (this.state == 4) 
+		{
+			this.hospital.healPatient(this);
+
+            if (this.health >= 100)
+            {
+                this.health = 100;
+                this.hospital.releasePatient();
+                this.state = 0;
+            }
 		}
 	}
 
@@ -76,7 +133,8 @@ class Warrior extends Villager
 		pop()
 	}
 
-	displayHealth() {
+	displayHealth() 
+	{
         push()
             let healthLength = constrain(this.health/100*30, 0, 30)
             strokeWeight(0)

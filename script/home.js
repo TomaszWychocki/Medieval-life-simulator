@@ -13,7 +13,7 @@ class Home extends Building
     show()
     {
         imageMode(CENTER);
-        image(this.img, this.posX, this.posY, 60, 60);
+        image(this.img, this.posX, this.posY);
 
         fill(255);
         textAlign(CENTER);

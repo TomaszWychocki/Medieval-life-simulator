@@ -13,6 +13,9 @@ class Miner extends Villager
         this.toLeftAnimation = minerLeftAnimation;
         this.displayText = `MINER (${this.health})`;
         this.hospital = getBuildingsArrayByType("Hospital")[0];
+        const homePos = generateBuildingPosition();
+        this.home = new Home(homePos.x, homePos.y);
+        buildings.push(this.home);
     }
 
     update()
@@ -24,6 +27,8 @@ class Miner extends Villager
          * 2 - go to the blacksmith
          * 3 - go to hospital
          * 4 - heal wounds
+         * 5 - go home
+         * 6 - rest
          */
 
         if (this.health <= 0)
@@ -32,7 +37,11 @@ class Miner extends Villager
             return;
         }
 
-        if (this.health < 100 && this.iron == 0 && this.state != 4)
+        if (dayNight.isNight()) {
+            this.state = 5;
+        }
+
+        if (this.health < 100 && this.iron == 0 && this.state != 4 && this.state != 5 && this.state != 6)
         {
             this.state = 3;
         }
@@ -107,6 +116,30 @@ class Miner extends Villager
             {
                 this.health = 100;
                 this.hospital.releasePatient();
+                this.state = 0;
+            }
+        }
+
+        if (this.state == 5)
+        {
+            if (distanceTo(this.posX, this.posY, this.home.posX, this.home.posY) < 15)
+            {
+                this.inBuilding = true;
+                this.state = 6;
+            }
+
+            let nextPoint = getNextPoint(this.posX, this.posY, this.home.posX, this.home.posY, this.speed * 0.75);
+
+            this.direction = nextPoint[0] < this.posX ? 0 : 1;
+            this.posX = nextPoint[0];
+            this.posY = nextPoint[1];
+            this.animate();
+        }
+
+        if (this.state == 6)
+        {
+            if (dayNight.isDay()) {
+                this.inBuilding = false;
                 this.state = 0;
             }
         }

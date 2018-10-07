@@ -16,7 +16,7 @@ class Enemy extends Villager
 		getCharactersArrayByType("Miner").forEach(miner =>
 		{
 			var dist = distanceTo(this.posX, this.posY, miner.posX, miner.posY);
-			if (dist < 15)
+			if (dist < 15 && !miner.inBuilding)
 			{
 				miner.health -= 10;
 				miner.displayText = "OUCH!";

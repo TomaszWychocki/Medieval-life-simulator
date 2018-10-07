@@ -6,6 +6,7 @@ let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
 let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
 let blacksmithMusic, miningMusic;
 let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
+let dayNight = undefined;
 
 function preload()
 {
@@ -30,7 +31,7 @@ function preload()
 function setup()
 {
     createCanvas(windowWidth, windowHeight);
-
+    dayNight = new DayNight();
     // Create animated frames from miner sprite
     let minerRightFrames = minerSpriteDataRight.frames;
     let minerLeftFrames = minerSpriteDataLeft.frames;
@@ -115,11 +116,6 @@ function setup()
         new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[3], getBuildingsArrayByType("Blacksmith")[2])
     );
 
-    characters.forEach(character => {
-        const homePos = generateBuildingPosition();
-        buildings.push(new Home(homePos.x, homePos.y));
-    });
-
     // I suppose 3 badguys should be enough...
     for (let i = 0; i < 3; i++)
     {
@@ -167,6 +163,8 @@ function draw()
         character.update();
         character.show();
     });
+
+    drawTime();
 }
 
 function distanceTo(x, y, x2, y2)
@@ -238,4 +236,16 @@ function removeCharacter(toRemove)
 {
     characters = characters.filter(character => character.id != toRemove.id);
     delete toRemove;
+}
+
+function drawTime()
+{
+    dayNight.addSecond();
+    textSize(24);
+    textAlign(CENTER);
+    fill(255);
+    //textSize(32);
+    textStyle(BOLD);
+    text('TIME: ' + dayNight.getCurrentTime().join(':'), 525, 25);
+    textSize(12);
 }

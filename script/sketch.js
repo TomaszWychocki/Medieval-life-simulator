@@ -21,7 +21,7 @@ function preload()
     enemySpritesheet = loadImage('./assets/images/goblinsword.png');
     enemyWalkDataRight = loadJSON('./assets/data/enemy-walk-right.json');
     enemyWalkDataLeft =  loadJSON('./assets/data/enemy-walk-left.json');
-    blacksmithMusic = loadSound("./assets/music/blacksmith.wav");
+    blacksmithMusic = loadSound("./assets/music/blacksmith.mp3");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
     grassTexture = loadImage('./assets/images/grass_texture.jpg');
 }

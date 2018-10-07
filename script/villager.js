@@ -7,6 +7,7 @@ class Villager
 		this.direction = [random(width), random(height)];
 		this.health = health;
 		this.isBurried = false;
+		this.id = Math.random() * this.posX * this.posY;
 	}
 
 	getType()

@@ -221,3 +221,15 @@ function getCharactersArrayByType(type)
 {
     return characters.filter(character => character.getType() == type);
 }
+
+function removeBuilding(toRemove)
+{
+    buildings = buildings.filter(building => building.id != toRemove.id);
+    delete toRemove;
+}
+
+function removeCharacter(toRemove)
+{
+    characters = characters.filter(character => character.id != toRemove.id);
+    delete toRemove;
+}

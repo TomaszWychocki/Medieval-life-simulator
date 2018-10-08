@@ -4,6 +4,8 @@ let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
 let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
+let warriorSpritesheet, warriorWalkDataRight, warriorWalkDataLeft;
+let warriorWalkAnimRight = [], warriorWalkAnimLeft = [];
 let blacksmithMusic, miningMusic;
 let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
 let dayNight = undefined;
@@ -26,6 +28,9 @@ function preload()
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
     grassTexture = loadImage('./assets/images/grass_texture.jpg');
     homeImg = loadImage('./assets/images/home.png');
+    warriorSpritesheet = loadImage('./assets/images/warrior-walk-sprite.png');
+    warriorWalkDataRight = loadJSON('./assets/data/warrior-walk-right.json');
+    warriorWalkDataLeft =  loadJSON('./assets/data/warrior-walk-left.json');
 }
 
 function setup()
@@ -62,6 +67,22 @@ function setup()
         let pos = enemyWalkLFrames[i].position;
         let enemyImg = enemySpritesheet.get(pos.x, pos.y, pos.w, pos.h);
         enemyWalkAnimLeft.push(enemyImg);
+    }
+
+    // Create animated frames from warrior sprite
+    let warriorWalkRFrames = warriorWalkDataRight.frames;
+    let warriorWalkLFrames = warriorWalkDataLeft.frames;
+    for (let i = 0; i < warriorWalkRFrames.length; i++)
+    {
+        let pos = warriorWalkRFrames[i].position;
+        let warriorImg = warriorSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        warriorWalkAnimRight.push(warriorImg);
+    }
+    for (let i = 0; i < warriorWalkLFrames.length; i++)
+    {
+        let pos = warriorWalkLFrames[i].position;
+        let warriorImg = warriorSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        warriorWalkAnimLeft.push(warriorImg);
     }
 
     for (let i = 0; i < 4; i++)

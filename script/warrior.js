@@ -5,6 +5,7 @@ class Warrior extends Villager
 		super(x, y);
 		this.defense = defense;
 		this.speed = 5;
+		this.index = 0;
 		this.barrak = barrak;
 		this.sword_durable = 0; 
 		this.displayText = `WARRIOR (${this.health})`;
@@ -12,6 +13,8 @@ class Warrior extends Villager
 		let randomBlackSmith = int(random(0, blacksmiths.length))
 		this.blacksmith = blacksmiths[randomBlackSmith];
 		this.hospital = getBuildingsArrayByType("Hospital")[0];
+		this.toRightAnimation = warriorWalkAnimRight;
+		this.toLeftAnimation = warriorWalkAnimLeft;
 	}
 
 	checkForEnemies()
@@ -119,14 +122,12 @@ class Warrior extends Villager
 
 	show()
 	{
-		noStroke();
-		fill(214, 66, 126);
-		ellipse(this.posX, this.posY, 20, 20);
+		let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
+        image(animation[this.index % animation.length], this.posX, this.posY, 60, 60);
 		fill(255);
 		textAlign(CENTER);
 		text(this.displayText, this.posX, this.posY - 28);
         this.displayHealth()
-		//
 		push()
 			textSize(10)
 			text('DUR: '+this.sword_durable, this.posX, this.posY + 20);

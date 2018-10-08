@@ -1,11 +1,12 @@
 let buildings = [], characters = [];
-let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture;
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture, homeImg;
 let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
 let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
 let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
 let blacksmithMusic, miningMusic;
 let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
+let dayNight = undefined;
 
 function preload()
 {
@@ -24,12 +25,13 @@ function preload()
     blacksmithMusic = loadSound("./assets/music/blacksmith.mp3");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
     grassTexture = loadImage('./assets/images/grass_texture.jpg');
+    homeImg = loadImage('./assets/images/home.png');
 }
 
 function setup()
 {
     createCanvas(windowWidth, windowHeight);
-
+    dayNight = new DayNight();
     // Create animated frames from miner sprite
     let minerRightFrames = minerSpriteDataRight.frames;
     let minerLeftFrames = minerSpriteDataLeft.frames;
@@ -161,6 +163,8 @@ function draw()
         character.update();
         character.show();
     });
+
+    drawTime();
 }
 
 function distanceTo(x, y, x2, y2)
@@ -232,4 +236,16 @@ function removeCharacter(toRemove)
 {
     characters = characters.filter(character => character.id != toRemove.id);
     delete toRemove;
+}
+
+function drawTime()
+{
+    dayNight.addSecond();
+    textSize(24);
+    textAlign(CENTER);
+    fill(255);
+    //textSize(32);
+    textStyle(BOLD);
+    text('TIME: ' + dayNight.getCurrentTime().join(':'), 525, 25);
+    textSize(12);
 }

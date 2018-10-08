@@ -8,7 +8,6 @@ class Miner extends Villager
         this.iron = 0;
         this.state = 0;
         this.speed = 5;
-        this.index = 0;
         this.toRightAnimation = minerRightAnimation;
         this.toLeftAnimation = minerLeftAnimation;
         this.displayText = `MINER (${this.health})`;
@@ -39,11 +38,7 @@ class Miner extends Villager
 
         if (this.state == 0)
         {
-            let nextPoint = getNextPoint(this.posX, this.posY, this.mine.posX, this.mine.posY, this.speed);
-
-            this.direction = nextPoint[0] < this.posX ? 0 : 1;
-            this.posX = nextPoint[0];
-            this.posY = nextPoint[1];
+            this.move(this.mine.posX, this.mine.posY);
             this.animate();
 
             if (distanceTo(this.posX, this.posY, this.mine.posX, this.mine.posY) < 15)
@@ -66,11 +61,7 @@ class Miner extends Villager
 
         if (this.state == 2)
         {
-            let nextPoint = getNextPoint(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY, this.speed);
-
-            this.direction = nextPoint[0] < this.posX ? 0 : 1;
-            this.posX = nextPoint[0];
-            this.posY = nextPoint[1];
+            this.move(this.blacksmith.posX, this.blacksmith.posY);
             this.animate();
 
             if (distanceTo(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY) < 15)
@@ -91,11 +82,7 @@ class Miner extends Villager
                 }
             }
 
-            let nextPoint = getNextPoint(this.posX, this.posY, this.hospital.posX, this.hospital.posY, this.speed * 0.75);
-
-            this.direction = nextPoint[0] < this.posX ? 0 : 1;
-            this.posX = nextPoint[0];
-            this.posY = nextPoint[1];
+            this.move(this.hospital.posX, this.hospital.posY);
             this.animate();
         }
 
@@ -125,7 +112,7 @@ class Miner extends Villager
 
     show()
     {
-        let animation = this.direction === 1 ? this.toRightAnimation : this.toLeftAnimation;
+        let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
         image(animation[this.index % animation.length], this.posX, this.posY, 20, 40);
 
         if (this.iron > 0)
@@ -133,17 +120,12 @@ class Miner extends Villager
             image(ironImg, this.posX - 2, this.posY, 15, 15);
         }
         text(this.displayText, this.posX, this.posY - 28);
-        this.displayHealth()
+        this.displayHealth();
 
         if (this.state == 1)
         {
             this.grunt();
         }
-    }
-
-    animate()
-    {
-        this.index += this.speed;
     }
 
     grunt()

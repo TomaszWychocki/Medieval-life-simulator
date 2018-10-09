@@ -2,7 +2,7 @@
 
 Simulate a medieval village in your browser!
 
-[![Screenshot](./screenshot-small.png)](./screenshot.png)
+[![Screenshot](./screenshot.png)](./screenshot.png)
 
 Feel free to add anything you want. Just expand this village by creating new buildings, characters, etc. in the [scripts/](./scripts/) directory and have fun! Please write scripts using the [p5.js](https://p5js.org/reference/) library.
 

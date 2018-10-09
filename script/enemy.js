@@ -7,34 +7,23 @@ class Enemy extends Villager
 		this.speed = 5;
 		this.index = 0;
         this.toRightAnimation = enemyWalkAnimRight;
-        this.toLeftAnimation = enemyWalkAnimLeft;
-		this.displayText = "Enemy";
+		this.toLeftAnimation = enemyWalkAnimLeft;
+		this.setDefaultDispalyText();
 	}
 
-	checkForMiners()
+	chectForVillagers()
 	{
-		getCharactersArrayByType("Miner").forEach(miner =>
+		characters.forEach(character =>
 		{
-			var dist = distanceTo(this.posX, this.posY, miner.posX, miner.posY);
-			if (dist < 15 && !miner.inBuilding)
+			if(character.getType() != "Enemy")
 			{
-				miner.health -= 10;
-				miner.displayText = "OUCH!";
-				setTimeout(() => miner.displayText = `MINER (${miner.health})`, 1500);
-			}
-		});
-	}
-
-	checkForWarriors()
-	{
-		getCharactersArrayByType("Warrior").forEach(warrior =>
-		{
-			var dist = distanceTo(this.posX, this.posY, warrior.posX, warrior.posY);
-			if (dist < 15)
-			{
-				warrior.health -= 10 * (warrior.defense / 100);
-				warrior.displayText = "OUCH!";
-				setTimeout(() => warrior.displayText = `WARRIOR (${warrior.health})`, 1500);
+				var dist = distanceTo(this.posX, this.posY, character.posX, character.posY);
+				if (dist < 15 && !character.inBuilding)
+				{
+					character.health -= 10;
+					character.displayText = "OUCH!";
+					setTimeout(() => this.setDefaultDispalyText(), 1500);
+				}
 			}
 		});
 	}
@@ -43,8 +32,7 @@ class Enemy extends Villager
 	{
 		if (this.health > 0)
 		{
-			this.checkForMiners();
-			this.checkForWarriors();
+			this.chectForVillagers();
 
 			if (distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 10)
 			{
@@ -62,21 +50,11 @@ class Enemy extends Villager
 
 	show()
 	{
-		let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
-        image(animation[this.index % animation.length], this.posX, this.posY, 60, 60);
-		fill(255);
-		text(this.displayText, this.posX, this.posY - 34);
-        this.displayHealth();
+		if(this.inBuilding == false && this.isBurried == false)
+		{
+			let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
+			image(animation[this.index % animation.length], this.posX, this.posY, 60, 60);
+			this.displayHealth();
+		}
 	}
-
-	displayHealth() {
-        push()
-            let healthLength = constrain(this.health/100*30, 0, 30)
-            strokeWeight(0)
-            fill(color("green"))
-            rect(this.posX - 15, this.posY - 25, healthLength ,5)
-            fill(color("red"))
-            rect(this.posX - 15 + healthLength, this.posY - 25, 30 - healthLength ,5)
-        pop()
-    }
 }

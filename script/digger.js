@@ -10,7 +10,7 @@ class Miner extends Villager
         this.speed = 5;
         this.toRightAnimation = minerRightAnimation;
         this.toLeftAnimation = minerLeftAnimation;
-        this.displayText = `MINER (${this.health})`;
+        this.setDefaultDispalyText();
         this.hospital = getBuildingsArrayByType("Hospital")[0];
         const homePos = generateBuildingPosition();
         this.home = new Home(homePos.x, homePos.y);
@@ -47,6 +47,7 @@ class Miner extends Villager
 
         if (this.state == 0)
         {
+            this.inBuilding = false;
             this.move(this.mine.posX, this.mine.posY);
             this.animate();
 
@@ -58,6 +59,7 @@ class Miner extends Villager
 
         if (this.state == 1)
         {
+            this.inBuilding = true;
             this.mine.dig();
 
             if (this.mine.iron > 0)
@@ -70,6 +72,7 @@ class Miner extends Villager
 
         if (this.state == 2)
         {
+            this.inBuilding = false;
             this.move(this.blacksmith.posX, this.blacksmith.posY);
             this.animate();
 
@@ -83,6 +86,7 @@ class Miner extends Villager
 
         if (this.state == 3)
         {
+            this.inBuilding = false;
             if (distanceTo(this.posX, this.posY, this.hospital.posX, this.hospital.posY) < 15)
             {
                 if(this.hospital.addPatient())
@@ -97,6 +101,7 @@ class Miner extends Villager
 
         if (this.state == 4)
         {
+            this.inBuilding = true;
             this.hospital.healPatient(this);
 
             if (this.health >= 100)
@@ -132,28 +137,20 @@ class Miner extends Villager
         }
     }
 
-    displayHealth() {
-        push()
-            let healthLength = constrain(this.health/100*30, 0, 30)
-            strokeWeight(0)
-            fill(color("green"))
-            rect(this.posX - 15, this.posY - 25, healthLength ,5)
-            fill(color("red"))
-            rect(this.posX - 15 + healthLength, this.posY - 25, 30 - healthLength ,5)
-        pop()
-    }
-
     show()
     {
-        let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
-        image(animation[this.index % animation.length], this.posX, this.posY, 20, 40);
-
-        if (this.iron > 0)
+        if(this.inBuilding == false && this.isBurried == false)
         {
-            image(ironImg, this.posX - 2, this.posY, 15, 15);
+            let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
+            image(animation[this.index % animation.length], this.posX, this.posY, 20, 40);
+
+            if (this.iron > 0)
+            {
+                image(ironImg, this.posX - 2, this.posY, 15, 15);
+            }
+
+            this.displayHealth();
         }
-        text(this.displayText, this.posX, this.posY - 28);
-        this.displayHealth();
 
         if (this.state == 1)
         {

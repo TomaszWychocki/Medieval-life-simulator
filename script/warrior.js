@@ -59,6 +59,7 @@ class Warrior extends Villager
 
 		if (this.state == 0) 
 		{
+			this.inBuilding = false;
 			if (distanceTo(this.posX, this.posY, this.blacksmith.posX, this.blacksmith.posY) < 15) 
 			{
 				this.state = 1;	
@@ -72,6 +73,7 @@ class Warrior extends Villager
 
 		if (this.state == 1) 
 		{
+			this.inBuilding = true;
 			if(this.blacksmith.swords > 0)
 			{
 				this.blacksmith.swords--;
@@ -82,6 +84,7 @@ class Warrior extends Villager
 		
 		if (this.state == 2) 
 		{
+			this.inBuilding = false;
 			this.checkForEnemies();
 			if (distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 15)
 			{
@@ -93,6 +96,7 @@ class Warrior extends Villager
 		
 		if (this.state == 3) 
 		{
+			this.inBuilding = false;
 			console.log('heading to hospital', this);
 			if (distanceTo(this.posX, this.posY, this.hospital.posX, this.hospital.posY) < 15) 
 			{
@@ -109,6 +113,7 @@ class Warrior extends Villager
 
 		if (this.state == 4) 
 		{
+			this.inBuilding = true;
 			this.hospital.healPatient(this);
 
             if (this.health >= 100)
@@ -122,27 +127,15 @@ class Warrior extends Villager
 
 	show()
 	{
-		let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
-        image(animation[this.index % animation.length], this.posX, this.posY, 60, 60);
-		fill(255);
-		textAlign(CENTER);
-		text(this.displayText, this.posX, this.posY - 28);
-        this.displayHealth()
-		push()
-			textSize(10)
-			text('DUR: '+this.sword_durable, this.posX, this.posY + 20);
-		pop()
+		if(this.inBuilding == false && this.isBurried == false)
+		{
+			let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
+			image(animation[this.index % animation.length], this.posX, this.posY, 60, 60);
+			this.displayHealth();
+			push();
+				textSize(10);
+				text('DUR: '+this.sword_durable, this.posX, this.posY + 20);
+			pop();
+		}
 	}
-
-	displayHealth() 
-	{
-        push()
-            let healthLength = constrain(this.health/100*30, 0, 30)
-            strokeWeight(0)
-            fill(color("green"))
-            rect(this.posX - 15, this.posY - 20, healthLength ,5)
-            fill(color("red"))
-            rect(this.posX - 15 + healthLength, this.posY - 20, 30 - healthLength ,5)
-        pop()
-    }
 }

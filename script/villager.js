@@ -11,6 +11,7 @@ class Villager
 		this.isBurried = false;
 		this.id = Math.random() * this.posX * this.posY;
 		this.inBuilding = false;
+		this.displayText = "";
 	}
 
 	getType()
@@ -43,5 +44,27 @@ class Villager
 	animate()
     {
         this.index += this.speed;
-    }
+	}
+	
+	displayHealth() 
+    {
+		fill(255);
+		textAlign(CENTER);
+        text(this.displayText, this.posX, this.posY - 28);
+
+        push()
+            let healthLength = constrain(this.health/100*30, 0, 30)
+            strokeWeight(0)
+            fill(color("green"))
+            rect(this.posX - 15, this.posY - 25, healthLength ,5)
+            fill(color("red"))
+            rect(this.posX - 15 + healthLength, this.posY - 25, 30 - healthLength ,5)
+        pop()
+	}
+	
+	setDefaultDispalyText()
+	{
+		let type = this.getType().toUpperCase();
+		this.displayText = `${type} (${this.health})`;
+	}
 }

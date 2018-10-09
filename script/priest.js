@@ -7,6 +7,7 @@ class Priest extends Villager
         this.speed = 5;
         this.deadCharacter = null;
         this.cemetery = getBuildingsArrayByType("Cemetery")[0];
+        this.setDefaultDispalyText();
     }
 
     update()
@@ -26,6 +27,10 @@ class Priest extends Villager
                 this.posX = nextPoint[0];
                 this.posY = nextPoint[1];
             }
+            else
+            {
+                this.inBuilding = true;
+            }
 
             characters.forEach(character =>
             {
@@ -39,6 +44,7 @@ class Priest extends Villager
 
         if (this.state == 1)
         {
+            this.inBuilding = false;
             let nextPoint = getNextPoint(this.posX, this.posY, this.deadCharacter.posX, this.deadCharacter.posY, this.speed);
 
             this.posX = nextPoint[0];
@@ -52,6 +58,7 @@ class Priest extends Villager
 
         if (this.state == 2)
         {
+            this.inBuilding = false;
             let nextPoint = getNextPoint(this.posX, this.posY, this.cemetery.posX, this.cemetery.posY, this.speed);
 
             this.posX = nextPoint[0];
@@ -69,11 +76,12 @@ class Priest extends Villager
 
     show()
     {
-        noStroke(255);
-        fill(0, 255, 0);
-        ellipse(this.posX, this.posY, 20, 20);
-        fill(255);
-        textAlign(CENTER);
-        text('PRIEST', this.posX, this.posY - 12);
+        if(this.inBuilding == false && this.isBurried == false)
+        {
+            noStroke(255);
+            fill(0, 255, 0);
+            ellipse(this.posX, this.posY, 20, 20);
+            this.displayHealth();
+        }
     }
 }

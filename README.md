@@ -11,7 +11,15 @@ Almost all [pull requests](https://github.com/TomaszWychocki/Medieval-life-simul
 ## Running
 
 1. Clone this repository (or a [fork](https://github.com/TomaszWychocki/Medieval-life-simulator/fork) of it)
-2. Open `index.html` in your browser by using one of the following methods:
-    * Enter `file:///path/to/index.html` into the address bar
-    * Use your local server (e.&nbsp;g. XAMPP or Apache)
-    * Follow [these](https://github.com/processing/p5.js/wiki/Local-server) instructions to start a temporary local server (e.&nbsp;g. on `localhost:8080` or another port)
+2. Install http-server for node.js:
+
+```
+npm i -g http-server
+```
+
+3. Go to repository directory
+4. Run server and follow instructions in console
+
+```
+http-server
+```

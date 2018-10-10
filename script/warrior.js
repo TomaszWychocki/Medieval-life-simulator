@@ -120,7 +120,7 @@ class Warrior extends Villager
             {
                 this.health = 100;
 				this.hospital.releasePatient();
-				this.displayText = `WARRIOR (${this.health})`;
+				this.setDefaultDispalyText();
                 this.state = 0;
             }
 		}

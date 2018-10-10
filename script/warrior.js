@@ -97,16 +97,16 @@ class Warrior extends Villager
 		if (this.state == 3) 
 		{
 			this.inBuilding = false;
-			console.log('heading to hospital', this);
+			//console.log('heading to hospital', this);
 			if (distanceTo(this.posX, this.posY, this.hospital.posX, this.hospital.posY) < 15) 
 			{
-				console.log('at hospital');
+				//console.log('at hospital');
 				if(this.hospital.addPatient())
                 {
                     this.state = 4;
                 }
 			}
-			console.log('not at hospital yet', this.hospital);
+			//console.log('not at hospital yet', this.hospital);
 			this.move(this.hospital.posX, this.hospital.posY);
 			this.animate();
 		}

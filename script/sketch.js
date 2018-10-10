@@ -9,6 +9,7 @@ let warriorWalkAnimRight = [], warriorWalkAnimLeft = [];
 let blacksmithMusic, miningMusic;
 let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
 let dayNight = undefined;
+let statBlock = undefined;
 
 function preload()
 {
@@ -37,6 +38,7 @@ function setup()
 {
     createCanvas(windowWidth, windowHeight);
     dayNight = new DayNight();
+    statBlock = new StatBlock(25,25);
     // Create animated frames from miner sprite
     let minerRightFrames = minerSpriteDataRight.frames;
     let minerLeftFrames = minerSpriteDataLeft.frames;
@@ -186,6 +188,7 @@ function draw()
     });
 
     drawTime();
+    statBlock.update(characters);
 }
 
 function distanceTo(x, y, x2, y2)
@@ -270,3 +273,20 @@ function drawTime()
     text('TIME: ' + dayNight.getCurrentTime().join(':'), 525, 25);
     textSize(12);
 }
+function keyTyped() {
+
+    if(key === 'b') {
+        // show hide block
+        statBlock.show = !statBlock.show;
+    }
+    
+
+    // from example
+    // if (key === 'a') {
+    //   value = 255;
+    // } else if (key === 'b') {
+    //   value = 0;
+    // }
+    // uncomment to prevent any default behavior
+    // return false;
+  }

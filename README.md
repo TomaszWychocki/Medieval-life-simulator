@@ -1,5 +1,11 @@
 # Medieval life simulator
 
+[![GitHub license](https://img.shields.io/github/license/TomaszWychocki/Medieval-life-simulator.svg)](https://github.com/TomaszWychocki/Medieval-life-simulator/blob/master/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/TomaszWychocki/Medieval-life-simulator.svg)](https://GitHub.com/TomaszWychocki/Medieval-life-simulator/graphs/contributors/)
+[![GitHub issues](https://img.shields.io/github/issues/TomaszWychocki/Medieval-life-simulator.svg)](https://GitHub.com/TomaszWychocki/Medieval-life-simulator/issues/)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/TomaszWychocki/Medieval-life-simulator.svg)](https://GitHub.com/TomaszWychocki/Medieval-life-simulator/pull/)
+[![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/TomaszWychocki/Medieval-life-simulator.svg)](https://GitHub.com/TomaszWychocki/Medieval-life-simulator/pull/)
+
 Simulate a medieval village in your browser!
 
 [![Screenshot](./screenshot-small.png)](./screenshot.png)

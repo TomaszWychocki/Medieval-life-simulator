@@ -27,3 +27,4 @@ http-server
 ## Game Instructions:
 
  - press 'b' to toggle block of statistics in upper left corner (enabled by default)
+ - press 'm' to toggle mute (sounds are enabled by default)

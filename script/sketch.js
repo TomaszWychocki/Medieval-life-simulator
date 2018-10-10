@@ -10,6 +10,7 @@ let blacksmithMusic, miningMusic;
 let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
 let dayNight = undefined;
 let statBlock = undefined;
+let mute = false;
 
 function preload()
 {
@@ -154,13 +155,10 @@ function setup()
     }
     // Blacksmith Music Setting
     blacksmithMusic.setVolume(1);
-    blacksmithMusic.play();
-    blacksmithMusic.loop();
 
     // Mining Music Setting
     miningMusic.setVolume(.5);
-    miningMusic.play();
-    miningMusic.loop();
+
 }
 
 function draw()
@@ -189,6 +187,7 @@ function draw()
 
     drawTime();
     statBlock.update(characters);
+    audioControls();
 }
 
 function distanceTo(x, y, x2, y2)
@@ -262,6 +261,21 @@ function removeCharacter(toRemove)
     delete toRemove;
 }
 
+function audioControls() {
+        // Play / Mute Controls
+        if(mute === true) {
+            blacksmithMusic.stop();
+            miningMusic.stop();
+        }else {
+            if(!blacksmithMusic.isLooping() || !blacksmithMusic.isPlaying()) {
+                blacksmithMusic.loop();
+            }
+            if(!miningMusic.isLooping() || !miningMusic.isPlaying()) {
+                miningMusic.loop();
+            }
+        }
+}
+
 function drawTime()
 {
     dayNight.addSecond();
@@ -279,14 +293,11 @@ function keyTyped() {
         // show hide block
         statBlock.show = !statBlock.show;
     }
-    
+    if(key === 'm') {
+        // toggle mute
+        mute = !mute;
+    }
 
-    // from example
-    // if (key === 'a') {
-    //   value = 255;
-    // } else if (key === 'b') {
-    //   value = 0;
-    // }
     // uncomment to prevent any default behavior
     // return false;
   }

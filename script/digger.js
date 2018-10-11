@@ -108,6 +108,7 @@ class Miner extends Villager
             {
                 this.health = 100;
                 this.hospital.releasePatient();
+                this.setDefaultDispalyText();
                 this.state = 0;
             }
         }

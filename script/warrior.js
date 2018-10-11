@@ -1,12 +1,12 @@
 class Warrior extends Villager
 {
-	constructor(x, y, barrak, health = 100, defense = 75)
+	constructor(x, y, barrack, health = 100, defense = 75)
 	{
 		super(x, y);
 		this.defense = defense;
 		this.speed = 5;
 		this.index = 0;
-		this.barrak = barrak;
+		this.barrack = barrack;
 		this.sword_durable = 0; 
 		this.displayText = `WARRIOR (${this.health})`;
 		let blacksmiths = getBuildingsArrayByType("Blacksmith");
@@ -35,7 +35,7 @@ class Warrior extends Villager
 
 	die()
 	{
-		this.barrak.warriorDied();
+		this.barrack.warriorDied();
 	}
 	
 	update() 
@@ -119,7 +119,8 @@ class Warrior extends Villager
             if (this.health >= 100)
             {
                 this.health = 100;
-                this.hospital.releasePatient();
+				this.hospital.releasePatient();
+				this.setDefaultDispalyText();
                 this.state = 0;
             }
 		}

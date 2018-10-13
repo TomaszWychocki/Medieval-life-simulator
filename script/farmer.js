@@ -12,6 +12,15 @@ class Farmer extends Villager
     update()
     {
         let townhall = getBuildingsArrayByType("Townhall")[0]; // assume its there
+        let hospital = getBuildingsArrayByType("Hospital")[0];
+
+        if (this.health < 100 && this.food == 0 && this.state !== 0)
+        {
+            // As long as not already moving to or healing at the hospital
+            if(this.state !== 20 && this.state !== 21) {
+                this.state = 20; // go to hospital
+            }
+        }
 
         switch (this.state)
         {
@@ -75,6 +84,35 @@ class Farmer extends Villager
                 townhall.food += this.food;
                 this.food = 0;
                 this.state = 1;
+                break;
+
+            // Go to a hospital
+            case 20:
+                this.inBuilding = false;
+                if (distanceTo(this.posX, this.posY, hospital.posX, hospital.posY) < 15)
+                {
+                    if(hospital.addPatient())
+                    {
+                        this.state = 21;
+                    }
+                    break;
+                }
+
+                this.move(hospital.posX, hospital.posY);
+                break;
+
+            // Heal @ hospital
+            case 21:
+                this.inBuilding = true;
+                hospital.healPatient(this);
+
+                if (this.health >= 100)
+                {
+                    this.health = 100;
+                    hospital.releasePatient();
+                    this.setDefaultDispalyText();
+                    this.state = 1;
+                }
                 break;
 
             default:

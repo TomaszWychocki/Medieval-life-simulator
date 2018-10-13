@@ -6,7 +6,7 @@ class Farm extends Building
         this.growProgress = 0;
         this.food = 0;
         this.depletion = 1;
-        setInterval(() => { this.growProgress++ }, 100) // 1000 - temporarily sped it up for testing
+        setInterval(() => { this.growProgress++ }, 1000)
     }
 
     update()

@@ -37,7 +37,7 @@ class Farmer extends Villager
 
             // Move to Farm
             case 1:
-                if (distanceTo(this.posX, this.posY, this.farm.posX, this.farm.posY) < 10) // 15
+                if (distanceTo(this.posX, this.posY, this.farm.posX, this.farm.posY) < 15)
                 {
                     this.inBuilding = true;
                     this.state = 2;

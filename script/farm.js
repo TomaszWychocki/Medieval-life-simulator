@@ -45,5 +45,7 @@ class Farm extends Building
         fill(255);
         textAlign(CENTER);
         text('FARM', this.posX, this.posY - 35);
+        fill(255, 204, 0);
+        text('FOOD: ' + this.food, this.posX, this.posY + 40);
     }
 }

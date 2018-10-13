@@ -15,6 +15,7 @@ class StatBlock {
             EnemyHealth: 0,
             EnemiesKilled: 0
         };
+        this.food = 0;
     }
 
     getType() {
@@ -24,6 +25,31 @@ class StatBlock {
     update(characters) {
         if (this.show !== true) return;
 
+        this.updateFood();
+        this.updateCharacterCounts(characters);
+        
+        textSize(16);
+        textAlign(LEFT);
+        fill(255);
+        //textSize(32);
+        textStyle(BOLD);
+        text('Villagers: ' + this.characterCounts.total, this.posX, this.posY);
+        text(`Alive: ${this.characterCounts.alive}`, this.posX, this.posY + 25);
+        text(`Dead: ${this.characterCounts.dead}`, this.posX, this.posY + 50);
+        text(`Avg Health: ${this.characterCounts.avgHealth.toFixed()}%`, this.posX, this.posY + 75);
+        text(`Enemies: ${this.characterCounts.Enemies}`, this.posX, this.posY + 100);
+        text(`Enemy Health: ${this.characterCounts.EnemyHealth}%`, this.posX, this.posY + 125);
+        text(`Enemies Killed: ${this.characterCounts.EnemiesKilled}`, this.posX, this.posY + 150);
+        text(`Food: ${this.food}`, this.posX, this.posY + 175);
+        textSize(12);
+    }
+
+    updateFood() {
+        let townhall = getBuildingsArrayByType("Townhall")[0]; // assume its there
+        this.food = townhall.food;
+    }
+
+    updateCharacterCounts(characters) {
         //console.log("NOT IMPLEMENTED");
         this.characterCounts.total = 0;
         this.characterCounts.alive = 0;
@@ -53,19 +79,6 @@ class StatBlock {
         this.characterCounts.avgHealth = (this.characterCounts.avgHealth / this.characterCounts.alive);
         this.characterCounts.EnemyHealth = this.characterCounts.Enemies > 0 ? (this.characterCounts.EnemyHealth / this.characterCounts.Enemies).toFixed() : '--';
 
-        textSize(16);
-        textAlign(LEFT);
-        fill(255);
-        //textSize(32);
-        textStyle(BOLD);
-        text('Villagers: ' + this.characterCounts.total, this.posX, this.posY);
-        text(`Alive: ${this.characterCounts.alive}`, this.posX, this.posY + 25);
-        text(`Dead: ${this.characterCounts.dead}`, this.posX, this.posY + 50);
-        text(`Avg Health: ${this.characterCounts.avgHealth.toFixed()}%`, this.posX, this.posY + 75);
-        text(`Enemies: ${this.characterCounts.Enemies}`, this.posX, this.posY + 100);
-        text(`Enemy Health: ${this.characterCounts.EnemyHealth}%`, this.posX, this.posY + 125);
-        text(`Enemies Killed: ${this.characterCounts.EnemiesKilled}`, this.posX, this.posY + 150);
-        textSize(12);
     }
 
 }

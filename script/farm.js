@@ -6,7 +6,7 @@ class Farm extends Building
         this.growProgress = 0;
         this.food = 0;
         this.depletion = 1;
-        setInterval(() => { this.growProgress++ }, 1000)
+        setInterval(() => { this.growProgress++ }, 100) // 1000 - temporarily sped it up for testing
     }
 
     update()
@@ -45,5 +45,7 @@ class Farm extends Building
         fill(255);
         textAlign(CENTER);
         text('FARM', this.posX, this.posY - 35);
+        fill(255, 204, 0);
+        text('FOOD: ' + this.food, this.posX, this.posY + 40);
     }
 }

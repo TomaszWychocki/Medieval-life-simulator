@@ -3,6 +3,7 @@ class Townhall extends Building
     constructor(x, y)
     {
         super(x, y, townhallImg);
+        this.food = 0;
     }
 
     soundAlarm()

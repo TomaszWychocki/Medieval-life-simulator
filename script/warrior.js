@@ -35,12 +35,13 @@ class Warrior extends Villager
 
 	die()
 	{
+		this.status = VILLAGER_STATUS_DEAD;
 		this.barrack.warriorDied();
 	}
 	
 	update() 
 	{
-		if (this.health <= 0) 
+		if (this.health <= 0 && this.status != VILLAGER_STATUS_DEAD) 
 		{
 			this.die();
 			this.displayText = "DEAD WARRIOR";
@@ -52,11 +53,12 @@ class Warrior extends Villager
 			this.state = 3;
 		}
 
-		if (this.sword_durable <= 0) 
+		if (this.sword_durable <= 0 && this.state !== 1) 
 		{
 			this.state = 0;	
 		}
 
+		// Move toward blacksmith
 		if (this.state == 0) 
 		{
 			this.inBuilding = false;
@@ -71,6 +73,7 @@ class Warrior extends Villager
 			}
 		}
 
+		// Pick up a sword from the blacksmith
 		if (this.state == 1) 
 		{
 			this.inBuilding = true;
@@ -82,6 +85,7 @@ class Warrior extends Villager
 			}
 		}
 		
+		// Move randomly and attack an enemy if one is found
 		if (this.state == 2) 
 		{
 			this.inBuilding = false;
@@ -94,6 +98,7 @@ class Warrior extends Villager
 			this.animate();
 		}
 		
+		// Head to hospital
 		if (this.state == 3) 
 		{
 			this.inBuilding = false;
@@ -108,9 +113,9 @@ class Warrior extends Villager
 			}
 			//console.log('not at hospital yet', this.hospital);
 			this.move(this.hospital.posX, this.hospital.posY);
-			this.animate();
 		}
 
+		// Heal at hospital
 		if (this.state == 4) 
 		{
 			this.inBuilding = true;
@@ -121,7 +126,7 @@ class Warrior extends Villager
                 this.health = 100;
 				this.hospital.releasePatient();
 				this.setDefaultDispalyText();
-                this.state = 0;
+                this.state = 2; // Go back to moving randomly from here
             }
 		}
 	}

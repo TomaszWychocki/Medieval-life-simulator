@@ -46,8 +46,8 @@ class Barracks extends Building
 
     warriorDied()
     {
-        this.warriors--;
-        this.deployed--;
+        if(this.warriors > 0) this.warriors--;
+        if(this.deployed > 0) this.deployed--;
     }
 
     update()
@@ -64,5 +64,6 @@ class Barracks extends Building
         fill(255);
         textAlign(CENTER);
         text('BARRACKS', this.posX, this.posY - 30);
+        text(`Warriors ${this.warriors.toFixed()} ; Deployed ${this.deployed}`, this.posX, this.posY+30)
     }
 }

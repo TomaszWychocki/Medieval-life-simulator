@@ -1,3 +1,7 @@
+const VILLAGER_STATUS_ALIVE = 1;
+const VILLAGER_STATUS_DEAD = 2;
+const VILLAGER_STATUS_UNKOWN = 0;
+
 class Villager
 {
 	constructor(x, y, health = 100, defense = 75)
@@ -7,6 +11,7 @@ class Villager
 		this.imageDirection = 0;
 		this.direction = [random(width), random(height)];
 		this.health = health;
+		this.status = VILLAGER_STATUS_ALIVE;
 		this.index = 0;
 		this.isBurried = false;
 		this.id = Math.random() * this.posX * this.posY;

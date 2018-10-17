@@ -17,7 +17,7 @@ function preload()
     backgroundMusic = loadSound("./assets/music/background-music.mp3");
     blacksmithMusic = loadSound("./assets/music/blacksmith.wav");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
-    grassTexture = loadImage('./assets/images/grass_texture.jpg');
+    grassTexture = loadImage('./assets/images/grass.jpg');
 }
 
 function setup()
@@ -156,12 +156,14 @@ function setup()
 function draw()
 {
     background(0);
-    var gCols = windowWidth / grassTexture.width + 1,
-        gRows = windowHeight / grassTexture.height + 1;
+    var gWd = grassTexture.width/2,
+        gHt = grassTexture.height/2,
+        gCols = windowWidth / gWd + 1,
+        gRows = windowHeight / gHt + 1;
     for (let w = 0; w < gCols; w++)
     {
         for(let h = 0; h < gRows; h++) {
-            image(grassTexture, w*grassTexture.width, h*grassTexture.height);
+            image(grassTexture, w*gWd, h*gHt, gWd, gHt);
         }
     }
 

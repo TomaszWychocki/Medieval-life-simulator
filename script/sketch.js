@@ -164,8 +164,8 @@ function setup()
 function draw()
 {
     background(0);
-    var gWd = grassTexture.width/3,
-        gHt = grassTexture.height/3,
+    var gWd = grassTexture.width,
+        gHt = grassTexture.height,
         gCols = windowWidth / gWd + 1,
         gRows = windowHeight / gHt + 1;
     for (let w = 0; w < gCols; w++)

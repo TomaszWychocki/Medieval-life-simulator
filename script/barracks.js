@@ -1,10 +1,8 @@
-class Barracks
+class Barracks extends Building
 {
     constructor(x, y)
     {
-        this.posX = x;
-        this.posY = y;
-        this.img = barracksImg;
+        super(x, y, barracksImg);
         this.warriors = 0;
         this.trainingProgress = 0;
         this.deployed = 0;
@@ -12,7 +10,7 @@ class Barracks
 
     createWarrior()
     {
-        if (this.warriors <= 5)
+        if (this.warriors <= 3)
         {
             this.trainingProgress++;
         }
@@ -26,7 +24,7 @@ class Barracks
 
     checkForEnemies()
     {
-        enemies.forEach(enemy =>
+        getCharactersArrayByType("Enemy").forEach(enemy =>
         {
             var dist = distanceTo(this.posX, this.posY, enemy.posX, enemy.posY);
             if (dist < 100)
@@ -42,23 +40,30 @@ class Barracks
         {
             return;
         }
-        warriors.push(new Warrior(this.posX, this.posY, this));
+        characters.push(new Warrior(this.posX, this.posY, this));
         this.deployed++;
     }
 
     warriorDied()
     {
-        this.warriors--;
-        this.deployed--;
+        if(this.warriors > 0) this.warriors--;
+        if(this.deployed > 0) this.deployed--;
     }
 
-    draw()
+    update()
+    {
+        this.createWarrior();
+        this.checkForEnemies();
+    }
+
+    show()
     {
         imageMode(CENTER);
         image(this.img, this.posX, this.posY, 60, 60);
 
         fill(255);
         textAlign(CENTER);
-        text('BARRACKS', this.posX, this.posY - 12);
+        text('BARRACKS', this.posX, this.posY - 30);
+        text(`Warriors ${this.warriors.toFixed()} ; Deployed ${this.deployed}`, this.posX, this.posY+30)
     }
 }

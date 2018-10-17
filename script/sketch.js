@@ -1,7 +1,16 @@
-let mines = [], miners = [], blacksmiths = [], barracks = [], hospitals = [], enemies = [], warriors = [], townhall;
-let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, minerSpritesheet, minerSpriteData, grassTexture;
+let buildings = [], characters = [];
+let mineImg, ironImg, blacksmithImg, hospitalImg, townhallImg, barracksImg, grassTexture, homeImg;
+let minerSpritesheet, minerSpriteDataRight, minerSpriteDataLeft;
 let minerRightAnimation = [], minerLeftAnimation = [];
-let backgroundMusic, blacksmithMusic, miningMusic;
+let enemySpritesheet, enemyWalkDataRight, enemyWalkDataLeft;
+let enemyWalkAnimRight = [], enemyWalkAnimLeft = [];
+let warriorSpritesheet, warriorWalkDataRight, warriorWalkDataLeft;
+let warriorWalkAnimRight = [], warriorWalkAnimLeft = [];
+let blacksmithMusic, miningMusic;
+let SWORD_DURABLE = 100, SWORD_DEGRADE = 50;
+let dayNight = undefined;
+let statBlock = undefined;
+let mute = false;
 
 function preload()
 {
@@ -14,15 +23,23 @@ function preload()
     minerSpriteDataRight = loadJSON('./assets/data/miner-right.json');
     minerSpriteDataLeft = loadJSON('./assets/data/miner-left.json');
     minerSpritesheet = loadImage('./assets/images/universal-lpc-sprite_male_01_walk-3frame.png');
-    backgroundMusic = loadSound("./assets/music/background-music.mp3");
-    blacksmithMusic = loadSound("./assets/music/blacksmith.wav");
+    enemySpritesheet = loadImage('./assets/images/goblinsword.png');
+    enemyWalkDataRight = loadJSON('./assets/data/enemy-walk-right.json');
+    enemyWalkDataLeft =  loadJSON('./assets/data/enemy-walk-left.json');
+    blacksmithMusic = loadSound("./assets/music/blacksmith.mp3");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
     grassTexture = loadImage('./assets/images/grass.jpg');
+    homeImg = loadImage('./assets/images/home.png');
+    warriorSpritesheet = loadImage('./assets/images/warrior-walk-sprite.png');
+    warriorWalkDataRight = loadJSON('./assets/data/warrior-walk-right.json');
+    warriorWalkDataLeft =  loadJSON('./assets/data/warrior-walk-left.json');
 }
 
 function setup()
 {
     createCanvas(windowWidth, windowHeight);
+    dayNight = new DayNight();
+    statBlock = new StatBlock(25,25);
     // Create animated frames from miner sprite
     let minerRightFrames = minerSpriteDataRight.frames;
     let minerLeftFrames = minerSpriteDataLeft.frames;
@@ -39,118 +56,109 @@ function setup()
         minerLeftAnimation.push(minerImg);
     }
 
+    // Create animated frames from enemy sprite
+    let enemyWalkRFrames = enemyWalkDataRight.frames;
+    let enemyWalkLFrames = enemyWalkDataLeft.frames;
+    for (let i = 0; i < enemyWalkRFrames.length; i++)
+    {
+        let pos = enemyWalkRFrames[i].position;
+        let enemyImg = enemySpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        enemyWalkAnimRight.push(enemyImg);
+    }
+    for (let i = 0; i < enemyWalkLFrames.length; i++)
+    {
+        let pos = enemyWalkLFrames[i].position;
+        let enemyImg = enemySpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        enemyWalkAnimLeft.push(enemyImg);
+    }
+
+    // Create animated frames from warrior sprite
+    let warriorWalkRFrames = warriorWalkDataRight.frames;
+    let warriorWalkLFrames = warriorWalkDataLeft.frames;
+    for (let i = 0; i < warriorWalkRFrames.length; i++)
+    {
+        let pos = warriorWalkRFrames[i].position;
+        let warriorImg = warriorSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        warriorWalkAnimRight.push(warriorImg);
+    }
+    for (let i = 0; i < warriorWalkLFrames.length; i++)
+    {
+        let pos = warriorWalkLFrames[i].position;
+        let warriorImg = warriorSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+        warriorWalkAnimLeft.push(warriorImg);
+    }
+
     for (let i = 0; i < 4; i++)
     {
-        let pos = {
-            x: random(width),
-            y: random(height)
-        };
-
-        if (checkCollisionsWithExistingBuildings(pos))
-        {
-            mines.push(new Mine(pos.x, pos.y));
-        } else
-        {
-            i--;
-        }
+        let pos = generateBuildingPosition();
+        buildings.push(new Mine(pos.x, pos.y));
     }
 
     for (let i = 0; i < 5; i++)
     {
-        let pos = {
-            x: random(width),
-            y: random(height)
-        };
-
-        if (checkCollisionsWithExistingBuildings(pos))
-        {
-            blacksmiths.push(new Blacksmith(pos.x, pos.y));
-        } else
-        {
-            i--;
-        }
+        let pos = generateBuildingPosition();
+        buildings.push(new Blacksmith(pos.x, pos.y));
     }
 
     for (let i = 0; i < 2; i++)
     {
-        let pos = {
-            x: random(width),
-            y: random(height)
-        };
-
-        if (checkCollisionsWithExistingBuildings(pos))
-        {
-            barracks.push(new Barracks(pos.x, pos.y));
-        } else
-        {
-            i--;
-        }
+        let pos = generateBuildingPosition();
+        buildings.push(new Barracks(pos.x, pos.y));
     }
 
-    let pos = {
-        x: random(width),
-        y: random(height)
-    };
-    while (!checkCollisionsWithExistingBuildings(pos))
-    {
-        pos = {
-            x: random(width),
-            y: random(height)
-        };
-    }
-    hospitals.push(new Hospital(pos.x, pos.y));
+    let pos = generateBuildingPosition();
+    buildings.push(new Hospital(pos.x, pos.y));
 
-    while (!checkCollisionsWithExistingBuildings(pos))
-    {
-        pos = {
-            x: random(width),
-            y: random(height)
-        };
-    }
-    townhall = new Townhall(pos.x, pos.y);
+    pos = generateBuildingPosition();
+    buildings.push(new Townhall(pos.x, pos.y));
 
-    miners.push(
-        new Miner(random(width), random(height), mines[0], blacksmiths[0])
+    pos = generateBuildingPosition();
+    buildings.push(new Cemetery(pos.x, pos.y));
+
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[0], getBuildingsArrayByType("Blacksmith")[0])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[0], blacksmiths[1])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[0], getBuildingsArrayByType("Blacksmith")[1])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[1], blacksmiths[2])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[1], getBuildingsArrayByType("Blacksmith")[2])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[1], blacksmiths[3])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[1], getBuildingsArrayByType("Blacksmith")[3])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[2], blacksmiths[4])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[2], getBuildingsArrayByType("Blacksmith")[4])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[2], blacksmiths[4])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[2], getBuildingsArrayByType("Blacksmith")[4])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[3], blacksmiths[3])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[3], getBuildingsArrayByType("Blacksmith")[3])
     );
-    miners.push(
-        new Miner(random(width), random(height), mines[3], blacksmiths[2])
+    characters.push(
+        new Miner(random(width), random(height), getBuildingsArrayByType("Mine")[3], getBuildingsArrayByType("Blacksmith")[2])
     );
 
     // I suppose 3 badguys should be enough...
     for (let i = 0; i < 3; i++)
     {
-        enemies.push(new Enemy(random(width), random(height)));
+        characters.push(new Enemy(random(width), random(height)));
     }
 
-    // Background Music Setting
-    backgroundMusic.setVolume(0.1);
-    backgroundMusic.play();
-
+    characters.push(
+        new Priest(random(width), random(height))
+    );
+    for (let i = 0; i < 5; i++)
+    {
+        characters.push(new Farmer(random(width), random(height)));
+    }
     // Blacksmith Music Setting
-    backgroundMusic.setVolume(1);
-    backgroundMusic.play();
+    blacksmithMusic.setVolume(1);
 
     // Mining Music Setting
-    miningMusic.setVolume(2);
-    miningMusic.play();
+    miningMusic.setVolume(.5);
+
 }
 
 function draw()
@@ -167,42 +175,21 @@ function draw()
         }
     }
 
-    mines.forEach(mine =>
+    buildings.forEach(building =>
     {
-        mine.draw();
+        building.update();
+        building.show();
     });
 
-    blacksmiths.forEach(blacksmith =>
+    characters.forEach(character =>
     {
-        blacksmith.draw();
-        blacksmith.createSword();
+        character.update();
+        character.show();
     });
 
-    miners.forEach(miner =>
-    {
-        miner.draw();
-        miner.action();
-    });
-
-    barracks.forEach(barrack =>
-    {
-        barrack.createWarrior();
-        barrack.checkForEnemies();
-        barrack.draw();
-    });
-
-    hospitals.forEach(hospital =>
-    {
-        hospital.draw();
-    });
-
-    townhall.draw();
-
-    warriors.forEach(warrior =>
-    {
-        warrior.draw();
-    });
-    enemies.forEach(enemy => enemy.draw());
+    drawTime();
+    statBlock.update(characters);
+    audioControls();
 }
 
 function distanceTo(x, y, x2, y2)
@@ -222,61 +209,97 @@ function getNextPoint(actualX, actualY, destX, destY, speed)
     return [actualX + vNormalized[0] * speed, actualY + vNormalized[1] * speed];
 }
 
-function checkCollisionsWithExistingBuildings(pos)
+function generateBuildingPosition()
 {
-    let collision = false;
+    let collision = true;
     let minDistance = 80;
+    let pos;
 
-    if (pos.x < 90 || pos.x > width - 90 || pos.y < 90 || pos.y > height - 90)
+    while (collision)
     {
-        return false;
+        pos = {
+            x: random(width),
+            y: random(height)
+        };
+        collision = false;
+
+        if (pos.x < 90 || pos.x > width - 90 || pos.y < 90 || pos.y > height - 90)
+        {
+            collision = true;
+            continue;
+        } 
+
+        buildings.forEach(building =>
+        {
+            if (distanceTo(building.posX, building.posY, pos.x, pos.y) < minDistance)
+            {
+                collision = true;
+            }
+        });
     }
 
-    mines.forEach(mine =>
-    {
-        if (distanceTo(mine.posX, mine.posY, pos.x, pos.y) < minDistance)
-        {
-            collision = true;
-            return;
-        }
-    });
-
-    blacksmiths.forEach(blacksmith =>
-    {
-        if (
-            distanceTo(blacksmith.posX, blacksmith.posY, pos.x, pos.y) < minDistance
-        )
-        {
-            collision = true;
-            return;
-        }
-    });
-
-    barracks.forEach(barrack =>
-    {
-        if (distanceTo(barrack.posX, barrack.posY, pos.x, pos.y) < minDistance)
-        {
-            collision = true;
-            return;
-        }
-    });
-
-    hospitals.forEach(hospital =>
-    {
-        if (distanceTo(hospital.posX, hospital.posY, pos.x, pos.y) < minDistance)
-        {
-            collision = true;
-            return;
-        }
-    });
-
-    if (townhall !== undefined && townhall !== null)
-    {
-        if (distanceTo(townhall.posX, townhall.posY, pos.x, pos.y) < minDistance)
-        {
-            return false;
-        }
-    }
-
-    return !collision;
+    return pos;
 }
+
+function getBuildingsArrayByType(type)
+{
+    return buildings.filter(building => building.getType() == type);
+}
+
+function getCharactersArrayByType(type)
+{
+    return characters.filter(character => character.getType() == type);
+}
+
+function removeBuilding(toRemove)
+{
+    buildings = buildings.filter(building => building.id != toRemove.id);
+    delete toRemove;
+}
+
+function removeCharacter(toRemove)
+{
+    characters = characters.filter(character => character.id != toRemove.id);
+    delete toRemove;
+}
+
+function audioControls() {
+        // Play / Mute Controls
+        if(mute === true) {
+            blacksmithMusic.stop();
+            miningMusic.stop();
+        }else {
+            if(!blacksmithMusic.isLooping() || !blacksmithMusic.isPlaying()) {
+                blacksmithMusic.loop();
+            }
+            if(!miningMusic.isLooping() || !miningMusic.isPlaying()) {
+                miningMusic.loop();
+            }
+        }
+}
+
+function drawTime()
+{
+    dayNight.addSecond();
+    textSize(24);
+    textAlign(CENTER);
+    fill(255);
+    //textSize(32);
+    textStyle(BOLD);
+    text('TIME: ' + dayNight.getCurrentTime().join(':'), 525, 25);
+    textSize(12);
+}
+function keyTyped() {
+
+    if(key === 'b') {
+        // show hide block
+        statBlock.show = !statBlock.show;
+    }
+    if(key === 'm') {
+        // toggle mute
+        mute = !mute;
+    }
+
+    // uncomment to prevent any default behavior
+    // return false;
+  }

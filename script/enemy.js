@@ -1,55 +1,60 @@
-class Enemy
+class Enemy extends Villager
 {
 	constructor(x, y, health = 100, defense = 75)
 	{
-		this.posX = x;
-		this.posY = y;
-		this.health = health;
+		super(x, y);
 		this.defense = defense;
 		this.speed = 5;
-		this.direction = [random(width), random(height)];
-		this.displayText = "Enemy";
+		this.index = 0;
+        this.toRightAnimation = enemyWalkAnimRight;
+		this.toLeftAnimation = enemyWalkAnimLeft;
+		this.setDefaultDispalyText();
 	}
 
-	checkForMiners()
+	chectForVillagers()
 	{
-		miners.forEach(miner =>
+		characters.forEach(character =>
 		{
-			var dist = distanceTo(this.posX, this.posY, miner.posX, miner.posY);
-			if (dist < 15)
+			if(character.getType() != "Enemy")
 			{
-				miner.health -= 10;
-				miner.displayText = "OUCH!";
-				setTimeout(() => miner.displayText = `MINER (${miner.health})`, 1500);
+				var dist = distanceTo(this.posX, this.posY, character.posX, character.posY);
+				if (dist < 15 && !character.inBuilding)
+				{
+					character.health -= 10;
+					character.displayText = "OUCH!";
+					setTimeout(() => this.setDefaultDispalyText(), 1500);
+				}
 			}
 		});
 	}
 
-	draw()
+	update()
 	{
 		if (this.health > 0)
 		{
-			this.checkForMiners();
+			this.chectForVillagers();
 
 			if (distanceTo(this.posX, this.posY, this.direction[0], this.direction[1]) < 10)
 			{
 				this.direction = [random(width), random(height)];
 			}
 
-			var point = getNextPoint(this.posX, this.posY, this.direction[0], this.direction[1], this.speed);
-			this.posX = point[0];
-			this.posY = point[1];
+			this.move(this.direction[0], this.direction[1]);
+			this.animate();
 		}
 		else
 		{
 			this.displayText = "DEAD ENEMY";
 		}
+	}
 
-		noStroke();
-		fill(244, 66, 226);
-		ellipse(this.posX, this.posY, 20, 20);
-		fill(255);
-		textAlign(CENTER);
-		text(this.displayText, this.posX, this.posY - 12);
+	show()
+	{
+		if(this.inBuilding == false && this.isBurried == false)
+		{
+			let animation = this.imageDirection === 1 ? this.toRightAnimation : this.toLeftAnimation;
+			image(animation[this.index % animation.length], this.posX, this.posY, 60, 60);
+			this.displayHealth();
+		}
 	}
 }

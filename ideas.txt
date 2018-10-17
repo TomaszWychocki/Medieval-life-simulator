@@ -1,1 +1,1 @@
-
+1. Add a border or background around stat-block 

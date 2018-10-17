@@ -28,7 +28,7 @@ function preload()
     enemyWalkDataLeft =  loadJSON('./assets/data/enemy-walk-left.json');
     blacksmithMusic = loadSound("./assets/music/blacksmith.mp3");
     miningMusic = loadSound("./assets/music/mining-sound.mp3");
-    grassTexture = loadImage('./assets/images/grass_texture.jpg');
+    grassTexture = loadImage('./assets/images/grass.jpg');
     homeImg = loadImage('./assets/images/home.png');
     warriorSpritesheet = loadImage('./assets/images/warrior-walk-sprite.png');
     warriorWalkDataRight = loadJSON('./assets/data/warrior-walk-right.json');
@@ -164,12 +164,14 @@ function setup()
 function draw()
 {
     background(0);
-    var gCols = windowWidth / grassTexture.width + 1,
-        gRows = windowHeight / grassTexture.height + 1;
+    var gWd = grassTexture.width/3,
+        gHt = grassTexture.height/3,
+        gCols = windowWidth / gWd + 1,
+        gRows = windowHeight / gHt + 1;
     for (let w = 0; w < gCols; w++)
     {
         for(let h = 0; h < gRows; h++) {
-            image(grassTexture, w*grassTexture.width, h*grassTexture.height);
+            image(grassTexture, w*gWd, h*gHt, gWd, gHt);
         }
     }
 
